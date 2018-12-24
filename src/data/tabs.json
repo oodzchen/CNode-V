@@ -1,0 +1,26 @@
+[
+  {
+    "category": "all",
+    "name": "全部"
+  },
+  {
+    "category": "good",
+    "name": "精华"
+  },
+  {
+    "category": "share",
+    "name": "分享"
+  },
+  {
+    "category": "ask",
+    "name": "问答"
+  },
+  {
+    "category": "job",
+    "name": "招聘"
+  },
+  {
+    "category": "dev",
+    "name": "测试"
+  }
+]
