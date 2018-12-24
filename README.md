@@ -28,8 +28,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ## Todo
 
-[o] 登录模块放到左侧抽屉
-[o] 帖子编辑
-[o] 清除缓存
-[o] 通知数量
-[-] 主题色
+- [x] 登录模块放到左侧抽屉
+- [x] 帖子编辑
+- [x] 清除缓存
+- [x] 通知数量
+- [ ] 主题色
