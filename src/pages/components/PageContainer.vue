@@ -19,6 +19,18 @@
             <p class="grey--text">积分 {{loginUser.score}} • 注册于 {{loginUser.create_at | timeFormattor}}</p>
           </div>
           <v-divider></v-divider>
+          <v-list-tile to="/account">
+            <v-list-tile-action><v-icon>fa-user</v-icon></v-list-tile-action>
+            <v-list-tile-content>个人中心</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile to="/settings">
+            <v-list-tile-action><v-icon>fa-cog</v-icon></v-list-tile-action>
+            <v-list-tile-content>设置</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile href="https://github.com/oodzchen/CNode-PWA/issues/new">
+            <v-list-tile-action><v-icon>fa-comment-alt</v-icon></v-list-tile-action>
+            <v-list-tile-content>反馈</v-list-tile-content>
+          </v-list-tile>
         </template>
         <template v-else>
           <div class="drawer-user">
@@ -34,14 +46,14 @@
           </v-list-tile>
         </template>
       </v-list>
-      <v-layout justify-space-between class="drawer-btm">
+      <!-- <v-layout justify-space-between class="drawer-btm">
         <v-btn flat left to="/settings" class="btn-settings">
           <v-icon color="grey">fa-cog</v-icon> 设置
         </v-btn>
-        <!-- <v-btn icon>
+        <v-btn icon>
           <v-icon color="grey">fa-moon</v-icon>
-        </v-btn> -->
-      </v-layout>
+        </v-btn>
+      </v-layout> -->
     </v-navigation-drawer>
 
     <div class="page-loading text-center" v-show="loading">

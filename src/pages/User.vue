@@ -5,10 +5,10 @@
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title v-if="isAccount">账户信息</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <!-- <v-spacer></v-spacer>
       <v-btn v-if="isAccount && accessToken" icon to="/settings">
         <v-icon>fa-cog</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-toolbar>
 
     <v-card flat class="user-card text-center">
