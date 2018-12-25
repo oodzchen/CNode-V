@@ -220,7 +220,8 @@ export default {
       replyRules: [
         v => !!v || '内容不能为空'
       ],
-      replyToId: '',
+      replyToUserId: '',
+      replyToReplyId: '',
       loginUser: null
     }
   },
@@ -323,10 +324,12 @@ export default {
       if (!this.accessToken) return
 
       if (item) {
-        this.replyToId = item.author.loginname
-        this.replyContent = `@${this.replyToId} `
+        this.replyToUserId = item.author.loginname
+        this.replyToReplyId = item.id
+        this.replyContent = `@${this.replyToUserId} `
       } else {
-        this.replyToId = ''
+        this.replyToUserId = ''
+        this.replyToReplyId = ''
         this.replyContent = ''
       }
       this.showReplyDialog = true
@@ -342,8 +345,8 @@ export default {
           }
         }
 
-        if (this.replyToId) {
-          config.data.reply_id = this.replyToId
+        if (this.replyToReplyId) {
+          config.data.reply_id = this.replyToReplyId
         }
 
         this.ajax(`/topic/${this.id}/replies`, config)
