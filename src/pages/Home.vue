@@ -191,7 +191,9 @@ export default {
           .then(data => {
             if (data.success) {
               this.tabsData[category] = data.data
-              this.cacheTopics(data.data)
+              this.$nextTick(() => {
+                this.cacheTopics(data.data)
+              })
             }
           })
           .finally(() => {
@@ -215,7 +217,9 @@ export default {
         }).then(data => {
           if (data.success) {
             this.tabsData[category].push(...data.data)
-            this.cacheTopics(data.data)
+            this.$nextTick(() => {
+              this.cacheTopics(data.data)
+            })
           }
         })
           .finally(() => {

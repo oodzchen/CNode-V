@@ -12,6 +12,9 @@
 </template>
 
 <style lang="stylus">
+html
+  -webkit-overflow-scrolling: touch
+
 .text-center
   text-align: center
 
