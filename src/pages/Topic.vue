@@ -27,86 +27,77 @@
       </v-menu>
     </v-toolbar>
 
-    <v-card flat class="topic" @click="clickInject">
-      <v-card-title primary-title>
-        <div>
-          <h3 class="headline">
-            {{currTopic.title}}
-          </h3>
-          <div class="grey--text" v-if="currTopic.author">
-            <router-link tag="span" :to="`/user/${currTopic.author.loginname}`">
-              <v-avatar size="24">
-                <img :src="currTopic.author.avatar_url">
-              </v-avatar> {{currTopic.author.loginname}}
-            </router-link> • 发布于{{currTopic.create_at | timeFormattor}} • {{currTopic.visit_count}}次浏览 • 来自{{tabsMap[currTopic.tab]}}
+    <div class="topic-wrap">
+      <v-card flat class="topic" @click="clickInject">
+        <v-card-title primary-title>
+          <div>
+            <h3 class="headline">
+              {{currTopic.title}}
+            </h3>
+            <div class="grey--text" v-if="currTopic.author">
+              <router-link tag="span" :to="`/user/${currTopic.author.loginname}`">
+                <v-avatar size="24">
+                  <img :src="currTopic.author.avatar_url">
+                </v-avatar> {{currTopic.author.loginname}}
+              </router-link> • 发布于{{currTopic.create_at | timeFormattor}} • {{currTopic.visit_count}}次浏览 • 来自{{tabsMap[currTopic.tab]}}
+            </div>
           </div>
-        </div>
-      </v-card-title>
-
-      <v-divider></v-divider>
-
-      <v-card-text v-html="currTopic.content"></v-card-text>
-    </v-card>
-
-    <div 
-      class="loading text-center"
-      v-show="showRepliesLoading"
-    >
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-html="currTopic.content"></v-card-text>
+      </v-card>
+      <v-card 
+        v-if="currTopic.replies && currTopic.replies.length" 
+        flat 
+        class="replies"
+        @click="clickInject"
+      >
+        <v-divider></v-divider>
+        <div class="replies-top">回复 {{currTopic.reply_count}}</div>
+        <template v-for="(reply, index) in currTopic.replies">
+          <v-divider :key="`${index}_divider`"></v-divider>
+          <v-card flat :key="`${index}_reply`">
+            <v-card-title>
+              <div class="grey--text">
+                <router-link tag="span" :to="`/user/${reply.author.loginname}`">
+                  <v-avatar size="24">
+                    <img :src="reply.author.avatar_url">
+                  </v-avatar> {{reply.author.loginname}}
+                </router-link> • {{reply.create_at | timeFormattor}}
+              </div>
+            </v-card-title>
+            <v-card-text v-html="reply.content"></v-card-text>
+            <v-card-actions class="grey--text">
+              <v-spacer></v-spacer>
+              <v-btn icon flat color="grey" @click="doReply(reply)">
+                <v-icon>fa-reply</v-icon>
+              </v-btn>
+              <v-btn 
+                icon 
+                flat 
+                :color="reply.is_uped ? 'primary' : 'grey'"
+                @click="upReplay(reply)"
+              >
+                <v-icon>fa-thumbs-up</v-icon>
+              </v-btn> {{reply.ups.length}}
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-card>
+      <div 
+        class="loading text-center"
+      >
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          v-show="showRepliesLoading"
+        ></v-progress-circular>
+        <div v-if="!showRepliesLoading && currTopic.replies && currTopic.replies.length === 0" class="grey--text">暂无评论</div>
+      </div>
     </div>
 
-    <v-card 
-      v-if="currTopic.replies && currTopic.replies.length" 
-      flat 
-      class="replies"
-      @click="clickInject"
-    >
-      <v-divider></v-divider>
-      <div class="replies-top">回复 {{currTopic.reply_count}}</div>
-      <template v-for="(reply, index) in currTopic.replies">
-        <v-divider :key="`${index}_divider`"></v-divider>
-        <v-card flat :key="`${index}_reply`">
-          <v-card-title>
-            <div class="grey--text">
-              <router-link tag="span" :to="`/user/${reply.author.loginname}`">
-                <v-avatar size="24">
-                  <img :src="reply.author.avatar_url">
-                </v-avatar> {{reply.author.loginname}}
-              </router-link> • {{reply.create_at | timeFormattor}}
-            </div>
-          </v-card-title>
-          <v-card-text v-html="reply.content"></v-card-text>
-          <v-card-actions class="grey--text">
-            <v-spacer></v-spacer>
-            <v-btn icon flat color="grey" @click="doReply(reply)">
-              <v-icon>fa-reply</v-icon>
-            </v-btn>
-            <v-btn 
-              icon 
-              flat 
-              :color="reply.is_uped ? 'primary' : 'grey'"
-              @click="upReplay(reply)"
-            >
-              <v-icon>fa-thumbs-up</v-icon>
-            </v-btn> {{reply.ups.length}}
-          </v-card-actions>
-        </v-card>
-      </template>
-    </v-card>
-
     <div class="reply-entry">
-      <v-text-field 
-        label="添加评论" 
-        outline
-        single-line
-        readonly
-        hide-details
-        height="20"
-        @click.prevent="doReply(null)"
-      ></v-text-field>
+      <input type="text" readonly placeholder="添加评论" @click.prevent="doReply(null)">
     </div>
 
     <v-dialog 
@@ -146,6 +137,9 @@
 </template>
 
 <style lang="stylus">
+.topic-wrap
+  padding-bottom: 50px
+
 .topic
 .replies
   .v-card__text img
@@ -164,7 +158,6 @@
   padding: 10px 16px
 
 .replies
-  padding-bottom: 60px
   .v-card__title
     padding-top: 5px
     padding-bottom 5px
@@ -183,11 +176,12 @@
   width: 100%
   background-color: #f8f8f8
   padding: 10px
-  .v-input__control
-    background-color: white
-  .v-input__slot
-    border-width: 1px !important
-    border-color: #ccc !important
+  input 
+    width: 100%;
+    height: 40px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
 
 .reply-box
   padding: 15px;
