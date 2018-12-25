@@ -23,7 +23,18 @@ export default new Router({
     {
       path: '/topic/:id',
       component: Topic,
-      props: true
+      props: route => ({
+        id: route.params.id,
+        reply: false
+      })
+    },
+    {
+      path: '/topic/:id/reply',
+      component: Topic,
+      props: route => ({
+        id: route.params.id,
+        reply: true
+      })
     },
     {
       path: '/topic/:id/edit',

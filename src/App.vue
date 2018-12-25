@@ -1,6 +1,6 @@
 <template>
   <v-app class="app-container" >
-    <router-view :key="$route.fullPath"></router-view>
+    <router-view></router-view>
 
     <v-snackbar
       v-model="showAlert"

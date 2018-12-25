@@ -97,17 +97,17 @@
     </div>
 
     <div class="reply-entry">
-      <input type="text" readonly placeholder="添加评论" @click.prevent="doReply(null)">
+      <input type="text" readonly placeholder="添加评论" @click.prevent="doReply()">
     </div>
 
     <v-dialog 
       fullscreen
       hide-overlay
       transition="dialog-bottom-transition"
-      v-model="showReplyDialog">
+      v-model="reply">
       <v-card flat>
         <v-toolbar color="primary" fixed class="page-toolbar">
-          <v-btn icon dark @click="showReplyDialog = !showReplyDialog">
+          <v-btn icon dark @click="$router.go(-1)">
             <v-icon>fa-times</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
@@ -201,7 +201,7 @@ TABS.forEach(item => {
 })
 
 export default {
-  props: [ 'id' ],
+  props: [ 'id', 'reply' ],
   data () {
     return {
       valid: true,
@@ -209,7 +209,6 @@ export default {
       showRepliesLoading: false,
       tabsMap: tabsMap,
       accessToken: null,
-      showReplyDialog: false,
       replyContent: '',
       replyRules: [
         v => !!v || '内容不能为空'
@@ -219,10 +218,9 @@ export default {
       loginUser: null
     }
   },
+  watch: {
+  },
   created () {
-    // if (this.$localStorage.get(`topic_${this.id}`)) {
-    //   this.currTopic = JSON.parse(this.$localStorage.get(`topic_${this.id}`))
-    // }
     this.accessToken = this.$localStorage.get('accessToken')
     this.currTopic = this.getTopicFromCache(this.id)
     this.getTopic()
@@ -326,7 +324,7 @@ export default {
         this.replyToReplyId = ''
         this.replyContent = ''
       }
-      this.showReplyDialog = true
+      this.$router.push(`/topic/${this.id}/reply`)
     },
     sendReply () {
       if (this.$refs.form.validate()) {
@@ -346,7 +344,7 @@ export default {
         this.ajax(`/topic/${this.id}/replies`, config)
           .then(data => {
             if (data.success) {
-              this.showReplyDialog = false
+              this.$router.go(-1)
               this.getTopic()
             }
           })
