@@ -62,14 +62,6 @@ export default new Router({
       component: Notifications
     },
     {
-      path: '/account',
-      component: User,
-      props: {
-        id: null,
-        isAccount: true
-      }
-    },
-    {
       path: '/login',
       component: Login,
       props: route => ({

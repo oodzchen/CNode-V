@@ -1,14 +1,9 @@
 <template>
-  <page-container @loginuser="onLoginUser">
+  <page-container>
     <v-toolbar color="primary" fixed dark class="page-toolbar">
       <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
-      <v-toolbar-title v-if="isAccount">账户信息</v-toolbar-title>
-      <!-- <v-spacer></v-spacer>
-      <v-btn v-if="isAccount && accessToken" icon to="/settings">
-        <v-icon>fa-cog</v-icon>
-      </v-btn> -->
     </v-toolbar>
 
     <v-card flat class="user-card text-center">
@@ -122,30 +117,17 @@ primaryData.tabs.forEach(tab => {
 })
 
 export default {
-  props: ['id', 'isAccount'],
+  props: ['id'],
   data () {
     return primaryData
   },
   created () {
-    if (this.isAccount) {
-      this.accessToken = this.getToken(this.$route.path)
-      this.loginUserId = this.$localStorage.get('loginUserId')
-      if (this.accessToken && this.loginUserId) {
-        this.getUserData(this.loginUserId)
-      }
-    } else {
-      this.getUserData(this.id)
-    }
+    this.getUserData(this.id)
   },
   beforeDestroy () {
     this.user = {}
   },
   methods: {
-    onLoginUser (data) {
-      if (!this.isAccount && data.loginname === this.id) {
-        this.$router.replace('/account')
-      }
-    },
     getUserData (id) {
       this.showGetUserLoading = true
       this.ajax(`/user/${id}`)

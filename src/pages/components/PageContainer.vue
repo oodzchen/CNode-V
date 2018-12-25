@@ -10,7 +10,7 @@
       <v-list>
         <template v-if="loginUser">
           <div class="drawer-user">
-            <router-link tag="div" to="/account">
+            <router-link tag="div" :to="`/user/${loginUser.loginname}`">
               <v-avatar >
                 <img :src="loginUser.avatar_url">
               </v-avatar>
@@ -19,7 +19,7 @@
             <p class="grey--text">积分 {{loginUser.score}} • 注册于 {{loginUser.create_at | timeFormattor}}</p>
           </div>
           <v-divider></v-divider>
-          <v-list-tile to="/account">
+          <v-list-tile :to="`/user/${loginUser.loginname}`">
             <v-list-tile-action><v-icon>fa-user</v-icon></v-list-tile-action>
             <v-list-tile-content>个人中心</v-list-tile-content>
           </v-list-tile>
