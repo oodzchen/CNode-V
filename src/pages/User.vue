@@ -102,7 +102,7 @@ const TABS = [
 
 let primaryData = {
   user: {},
-  currTab: null,
+  currTab: 0,
   tabs: TABS,
   tabsData: {},
   showGetUserLoading: false,
@@ -124,8 +124,8 @@ export default {
   created () {
     this.getUserData(this.id)
   },
-  beforeDestroy () {
-    this.user = {}
+  mounted () {
+    document.documentElement.scrollTop = 0
   },
   methods: {
     getUserData (id) {
