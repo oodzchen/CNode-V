@@ -1,14 +1,12 @@
 <template>
   <page-container>
-    <v-toolbar color="primary" fixed class="page-toolbar">
+    <v-toolbar dark color="primary" fixed class="page-toolbar">
       <v-btn icon dark @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
+      <v-toolbar-title>登录</v-toolbar-title>
     </v-toolbar>
     <v-card flat class="login text-center">
-      <v-card-title>
-        <h2>登录</h2>
-      </v-card-title>
       <v-card-text>  
         <v-btn icon fab color="primary" @click="showCamera = true">
           <v-icon>fa-camera</v-icon>
