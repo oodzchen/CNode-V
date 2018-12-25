@@ -17,7 +17,7 @@
       </v-btn>
     </v-toolbar>
     <v-list light three-line class="tab-list noties-list">
-      <template v-for="(item, index) in [...unread, ...read]">
+      <template v-for="(item, index) in allMessages">
         <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
         <v-list-tile 
           :key="index + '_tile'" 
@@ -69,6 +69,11 @@ export default {
       loginUser: null
     }
   },
+  computed: {
+    allMessages () {
+      return [...this.unread, ...this.read]
+    }
+  },
   created () {
     this.accessToken = this.getToken(this.$route.path)
 
@@ -115,10 +120,12 @@ export default {
         }
       }).then(data => {
         if (data.success) {
-          this.unread.forEach(item => {
-            item.has_read = true
-          })
-          this.read = [...this.unread, this.read]
+          Array.from(this.unread)
+            .reverse()
+            .forEach(item => {
+              item.has_read = true
+              this.read.unshift(item)
+            })
           this.unread = []
         }
       })
