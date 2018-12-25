@@ -9,24 +9,15 @@
       </v-btn>
       <v-toolbar-title>主页</v-toolbar-title>
       <v-spacer></v-spacer>
-      <!-- <v-menu bottom left>
-        <v-btn
-          slot="activator"
-          dark
-          icon
+      <v-btn icon value="notifications" to="/notifications">
+        <v-badge
+          overlap
+          color="red"
         >
-          <v-icon>fa-ellipsis-v</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile to="/settings">
-            <v-list-tile-title>设置</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile to="/about">
-            <v-list-tile-title>关于</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu> -->
-      <!-- <v-text-field prepend-inner-icon="search" label="搜索" single-line></v-text-field> -->
+          <span v-if="unreadCount > 0" slot="badge">{{unreadCount}}</span>
+          <v-icon>fa-bell</v-icon>
+        </v-badge>
+      </v-btn>
       <v-tabs 
         slot="extension"
         v-model="currTab" 
@@ -86,21 +77,24 @@
         </v-tab-item>
       </v-tabs-items>
 
-      <!-- <div class="btn-new">
-        <v-btn fab icon dark color="primary" to="/new">
-          <v-icon>fa-plus</v-icon>
-        </v-btn>
-      </div> -->
+      <v-btn
+        fixed
+        fab 
+        dark
+        color="primary" 
+        to="/new"
+        class="btn-new"
+      >
+        <v-icon dark>fa-plus</v-icon>
+      </v-btn>
     </v-content>
   </page-container>
 </template>
 
 <style lang="stylus">
 .btn-new
-  position: fixed
-  right: 15px
-  bottom: 100px
-  z-index: 500
+  right: 16px
+  bottom: 16px
 
 .tab-list
   .theme--light.v-chip
@@ -131,7 +125,8 @@ let primaryData = {
   tabsState: {},
   showRefreshLoading: false,
   loginUser: null,
-  accessToken: null
+  accessToken: null,
+  unreadCount: 0
 }
 
 TABS.forEach(tab => {
@@ -150,6 +145,10 @@ export default {
   },
   created () {
     this.accessToken = this.$localStorage.get('accessToken')
+
+    if (this.accessToken) {
+      this.getUnreadCount()
+    }
   },
   mounted () {
     this.$nextTick(() => {
@@ -227,6 +226,17 @@ export default {
     cacheTopics (data) {
       data.forEach(item => {
         this.$localStorage.set(`topic_${item.id}`, JSON.stringify(item))
+      })
+    },
+    getUnreadCount () {
+      this.ajax('/message/count', {
+        params: {
+          accesstoken: this.accessToken
+        }
+      }).then(data => {
+        if (data.success) {
+          this.unreadCount = data.data
+        }
       })
     }
   }

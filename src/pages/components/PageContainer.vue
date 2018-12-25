@@ -48,7 +48,7 @@
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
 
-    <v-bottom-nav 
+    <!-- <v-bottom-nav 
       v-show="showBottomNav"
       fixed
       app
@@ -58,9 +58,9 @@
       <v-btn value="home" to="/" exact>
         <v-icon>fa-home</v-icon>
       </v-btn>
-      <!-- <v-btn value="search" to="/search">
+      <v-btn value="search" to="/search">
         <v-icon>fa-search</v-icon>
-      </v-btn> -->
+      </v-btn>
       <v-btn value="new" to="/new">
         <v-icon>fa-plus-circle</v-icon>
       </v-btn>
@@ -73,10 +73,10 @@
           <v-icon>fa-bell</v-icon>
         </v-badge>
       </v-btn>
-      <!-- <v-btn value="account" to="/account">
+      <v-btn value="account" to="/account">
         <v-icon>fa-user</v-icon>
-      </v-btn> -->
-    </v-bottom-nav>
+      </v-btn>
+    </v-bottom-nav> -->
   </div>
 </template>
 
@@ -140,8 +140,8 @@ export default {
       showDrawer: false,
       accessToken: null,
       loginUserId: null,
-      loginUser: null,
-      unreadCount: 0
+      loginUser: null
+      // unreadCount: 0
     }
   },
   created () {
@@ -159,7 +159,7 @@ export default {
     let loginUser = this.$localStorage.get('loginUser')
 
     if (this.accessToken) {
-      this.getUnreadCount()
+      // this.getUnreadCount()
 
       if (loginUser) {
         this.loginUser = JSON.parse(loginUser)
@@ -194,18 +194,18 @@ export default {
     },
     toggleDrawer () {
       this.showDrawer = !this.showDrawer
-    },
-    getUnreadCount () {
-      this.ajax('/message/count', {
-        params: {
-          accesstoken: this.accessToken
-        }
-      }).then(data => {
-        if (data.success) {
-          this.unreadCount = data.data
-        }
-      })
     }
+    // getUnreadCount () {
+    //   this.ajax('/message/count', {
+    //     params: {
+    //       accesstoken: this.accessToken
+    //     }
+    //   }).then(data => {
+    //     if (data.success) {
+    //       this.unreadCount = data.data
+    //     }
+    //   })
+    // }
   }
 }
 </script>

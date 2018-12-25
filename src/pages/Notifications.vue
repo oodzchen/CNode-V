@@ -1,11 +1,14 @@
 <template>
   <page-container drawer ref="container" @loginuser="data => loginUser = data">
     <v-toolbar app color="primary" fixed class="page-toolbar" dark>
-      <v-btn icon @click="$refs.container.toggleDrawer()">
+      <!-- <v-btn icon @click="$refs.container.toggleDrawer()">
         <v-avatar v-if="loginUser" size="30" color="accent">
           <img :src="loginUser.avatar_url">
         </v-avatar>
         <v-icon v-else>fa-user</v-icon>
+      </v-btn> -->
+      <v-btn icon dark @click="$router.go(-1)">
+        <v-icon>fa-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>提醒</v-toolbar-title>
       <v-spacer></v-spacer>
