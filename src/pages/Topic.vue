@@ -108,7 +108,7 @@
       <v-card flat>
         <v-toolbar color="primary" fixed class="page-toolbar">
           <v-btn icon dark @click="$router.go(-1)">
-            <v-icon>fa-times</v-icon>
+            <v-icon>fa-arrow-left</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn dark icon @click="sendReply">
