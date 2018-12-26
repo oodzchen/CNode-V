@@ -8,8 +8,8 @@
       v-model="showDrawer"
     >
       <v-list>
-        <template v-if="loginUser">
-          <div class="drawer-user">
+        <div class="drawer-user">
+          <template v-if="loginUser">
             <router-link tag="div" :to="`/user/${loginUser.loginname}`">
               <v-avatar >
                 <img :src="loginUser.avatar_url">
@@ -17,34 +17,31 @@
             </router-link>
             <h3>{{loginUser.loginname}}</h3>
             <p class="grey--text">积分 {{loginUser.score}} • 注册于 {{loginUser.create_at | timeFormattor}}</p>
-          </div>
-          <v-divider></v-divider>
-          <v-list-tile :to="`/user/${loginUser.loginname}`">
-            <v-list-tile-action><v-icon>fa-user</v-icon></v-list-tile-action>
-            <v-list-tile-content>个人中心</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/settings">
-            <v-list-tile-action><v-icon>fa-cog</v-icon></v-list-tile-action>
-            <v-list-tile-content>设置</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile href="https://github.com/oodzchen/CNode-PWA/issues/new">
-            <v-list-tile-action><v-icon>fa-comment-alt</v-icon></v-list-tile-action>
-            <v-list-tile-content>反馈</v-list-tile-content>
-          </v-list-tile>
-        </template>
-        <template v-else>
-          <div class="drawer-user">
+          </template>
+          <template v-else>
             <v-btn icon to="/login">
               <v-icon size="50">fa-user</v-icon>
             </v-btn>
             <div>登录后可进行发帖、评论、点赞等操作</div>
-          </div>
-          <v-divider></v-divider>
-          <v-list-tile to="/login">
-            <v-list-tile-action><v-icon>fa-sign-in-alt</v-icon></v-list-tile-action>
-            <v-list-tile-content>登录</v-list-tile-content>
-          </v-list-tile>
-        </template>
+          </template>
+        </div>
+        <v-divider></v-divider>
+        <v-list-tile v-if="loginUser" :to="`/user/${loginUser.loginname}`">
+          <v-list-tile-action><v-icon>fa-user</v-icon></v-list-tile-action>
+          <v-list-tile-content>个人中心</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-else to="/login">
+          <v-list-tile-action><v-icon>fa-sign-in-alt</v-icon></v-list-tile-action>
+          <v-list-tile-content>登录</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/settings">
+          <v-list-tile-action><v-icon>fa-cog</v-icon></v-list-tile-action>
+          <v-list-tile-content>设置</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile href="https://github.com/oodzchen/CNode-PWA/issues/new">
+          <v-list-tile-action><v-icon>fa-comment-alt</v-icon></v-list-tile-action>
+          <v-list-tile-content>反馈</v-list-tile-content>
+        </v-list-tile>
       </v-list>
       <!-- <v-layout justify-space-between class="drawer-btm">
         <v-btn flat left to="/settings" class="btn-settings">
