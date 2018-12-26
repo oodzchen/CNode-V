@@ -157,7 +157,7 @@ export default {
         window.localStorage.clear()
         this.$localStorage.set('accessToken', token)
         this.$localStorage.set('loginUserId', id)
-        this.$localStorage.get('loginUser', data)
+        this.$localStorage.set('loginUser', data)
       }
     },
     isDisabled (category) {
