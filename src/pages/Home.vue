@@ -171,7 +171,7 @@ export default {
     }
 
     if (this.currTabData.length === 0) {
-      this.getTabListData(this.currTab)
+      this.getTabListData()
     }
   },
   mounted () {
@@ -200,27 +200,23 @@ export default {
         })
       }
     },
-    onTabChange (index) {
-      let category = this.tabs[index].category
-
-      if (this.tabsData[category] && this.tabsData[category].length === 0) {
-        this.getTabListData(index)
+    onTabChange () {
+      if (this.currTabData.length === 0) {
+        this.getTabListData()
       }
     },
-    getTabListData (index) {
-      let category = this.tabs[index].category
-
+    getTabListData () {
       this.showRefreshLoading = true
       this.ajax('/topics', {
         params: {
-          tab: category === 'all' ? '' : category,
+          tab: this.currCategory === 'all' ? '' : this.currCategory,
           limit: NUM_PER_PAGE,
           page: 1
         }
       })
         .then(data => {
           if (data.success) {
-            this.tabsData[category] = data.data
+            this.tabsData[this.currCategory] = data.data
             this.$nextTick(() => {
               this.cacheTopics(data.data)
             })
@@ -285,7 +281,7 @@ export default {
       if (index === this.currTab) {
         let listWrap = this.$refs[`tab_item_${tab.category}`][0].$el
         listWrap.scrollTop = 0
-        this.getTabListData(index)
+        this.getTabListData()
       }
     }
   }
