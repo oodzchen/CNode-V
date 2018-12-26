@@ -32,7 +32,7 @@
     <v-bottom-sheet v-model="clearCacheSheet">
       <v-list>
         <v-subheader>清除缓存</v-subheader>
-        <v-list-tile @click="clearCache(false)">
+        <v-list-tile v-if="accessToken" @click="clearCache(false)">
           <v-list-tile-title>保留登录数据</v-list-tile-title>
         </v-list-tile>
         <v-list-tile @click="clearCache(true)">
@@ -75,7 +75,7 @@ export default {
       this.$localStorage.remove('loginUserId')
       this.$localStorage.remove('loginUser')
 
-      // this.$router.replace('/login')
+      this.$router.replace('/')
     },
     clearCache (clearAll) {
       this.clearCacheSheet = false
