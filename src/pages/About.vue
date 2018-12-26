@@ -9,7 +9,7 @@
     <v-content>
       <v-card flat>
         <v-card-title>
-          <h1>CNode-PWA</h1>
+          <h1>CNode-PWA 0.9.2</h1>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
