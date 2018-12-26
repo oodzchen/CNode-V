@@ -149,6 +149,7 @@ export default {
     clearCache (clearAll) {
       this.clearCacheSheet = false
       if (clearAll) {
+        this.accessToken = null
         window.localStorage.clear()
       } else {
         let token = this.$localStorage.get('accessToken')
