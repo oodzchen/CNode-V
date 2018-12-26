@@ -40,6 +40,7 @@
           :key="index"
           :ref="`tab_item_${item.category}`"
           @scroll="onTabListScroll(item.category)"
+          class="tab-item-wrap"
         >
           <v-list v-if="tabsData[item.category].length > 0" light three-line class="tab-list">
             <template v-for="(item, index) in tabsData[item.category]">
@@ -103,12 +104,16 @@
   .v-list__tile__title
     .v-icon
       vertical-align: middle
+
+.tab-item-wrap
+  -webkit-overflow-scrolling: touch
 </style>
 
 
 <script>
 import TABS from '@/data/tabs'
 import TABS_MAP from '@/data/tabs-map'
+import throttle from 'lodash/throttle'
 
 const NUM_PER_PAGE = 20
 
@@ -206,7 +211,7 @@ export default {
           })
       }
     },
-    onTabListScroll (category) {
+    onTabListScroll: throttle(function (category) {
       let el = this.$refs[`tab_item_${category}`][0].$el
       let list = el.children[0]
       if (Math.round(el.scrollTop) >= list.offsetHeight - listViewHeight) {
@@ -230,7 +235,7 @@ export default {
             state.showGetMoreLoading = false
           })
       }
-    },
+    }, 100),
     cacheTopics (data) {
       data.forEach(item => {
         this.$localStorage.set(`topic_${item.id}`, JSON.stringify(item))
