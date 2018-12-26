@@ -24,9 +24,13 @@
         grow 
         color="transparent"
         slider-color="white"
-        @input="getTabListData"
+        @input="onTabChange"
       >
-        <v-tab v-for="item in tabs" :key="item.category">{{item.name}}</v-tab>
+        <v-tab 
+          v-for="(item, index) in tabs" 
+          :key="index"
+          @click="onTabClick(item, index)"
+        >{{item.name}}</v-tab>
       </v-tabs>
     </v-toolbar>
 
@@ -186,30 +190,35 @@ export default {
         })
       }
     },
-    getTabListData (index) {
+    onTabChange (index) {
       let category = this.tabs[index].category
 
       if (this.tabsData[category] && this.tabsData[category].length === 0) {
-        this.showRefreshLoading = true
-        this.ajax('/topics', {
-          params: {
-            tab: category === 'all' ? '' : category,
-            limit: NUM_PER_PAGE,
-            page: 1
+        this.getTabListData(index)
+      }
+    },
+    getTabListData (index) {
+      let category = this.tabs[index].category
+
+      this.showRefreshLoading = true
+      this.ajax('/topics', {
+        params: {
+          tab: category === 'all' ? '' : category,
+          limit: NUM_PER_PAGE,
+          page: 1
+        }
+      })
+        .then(data => {
+          if (data.success) {
+            this.tabsData[category] = data.data
+            this.$nextTick(() => {
+              this.cacheTopics(data.data)
+            })
           }
         })
-          .then(data => {
-            if (data.success) {
-              this.tabsData[category] = data.data
-              this.$nextTick(() => {
-                this.cacheTopics(data.data)
-              })
-            }
-          })
-          .finally(() => {
-            this.showRefreshLoading = false
-          })
-      }
+        .finally(() => {
+          this.showRefreshLoading = false
+        })
     },
     onTabListScroll: throttle(function (category) {
       let el = this.$refs[`tab_item_${category}`][0].$el
@@ -261,6 +270,13 @@ export default {
       })
       this.tabs = newTabs
       this.$localStorage.set('selectedTabs', selects.join(','))
+    },
+    onTabClick (tab, index) {
+      if (index === this.currTab) {
+        let listWrap = this.$refs[`tab_item_${tab.category}`][0].$el
+        listWrap.scrollTop = 0
+        this.getTabListData(index)
+      }
     }
   }
 }
