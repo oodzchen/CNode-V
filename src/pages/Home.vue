@@ -147,6 +147,14 @@ export default {
   data () {
     return primaryData
   },
+  computed: {
+    currCategory () {
+      return this.tabs[this.currTab].category
+    },
+    currTabData () {
+      return this.tabsData[this.currCategory]
+    }
+  },
   created () {
     this.accessToken = this.$localStorage.get('accessToken')
     if (this.accessToken) {
@@ -162,7 +170,9 @@ export default {
       this.$localStorage.set('selectedTabs', Object.keys(TABS_MAP).slice(0, 5).join(','))
     }
 
-    this.getTabListData(this.currTab)
+    if (this.currTabData.length === 0) {
+      this.getTabListData(this.currTab)
+    }
   },
   mounted () {
     this.$nextTick(() => {
