@@ -54,7 +54,7 @@ export default {
 
       let response = await axios(config).catch(e => {
         if (e) {
-          this.alert('error', '操作失败')
+          this.alert('error', '请求失败')
           throw new Error(e)
         }
       }).finally(() => {

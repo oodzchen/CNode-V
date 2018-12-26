@@ -24,7 +24,7 @@
         grow 
         color="transparent"
         slider-color="white"
-        @input="onTabsChange"
+        @input="getTabListData"
       >
         <v-tab v-for="item in tabs" :key="item.category">{{item.name}}</v-tab>
       </v-tabs>
@@ -36,13 +36,13 @@
       </div>
       <v-tabs-items v-model="currTab">
         <v-tab-item
-          v-for="(data, category) in tabsData"
-          :key="category"
-          :ref="`tab_item_${category}`"
-          @scroll="onTabListScroll(category)"
+          v-for="(item, index) in tabs"
+          :key="index"
+          :ref="`tab_item_${item.category}`"
+          @scroll="onTabListScroll(item.category)"
         >
-          <v-list v-if="data.length > 0" light three-line class="tab-list">
-            <template v-for="(item, index) in data">
+          <v-list v-if="tabsData[item.category].length > 0" light three-line class="tab-list">
+            <template v-for="(item, index) in tabsData[item.category]">
               <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
               <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
                 <v-list-tile-avatar>
@@ -66,11 +66,11 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
-            <div v-if="data.length > 0" class="loading text-center">
+            <div v-if="tabsData[item.category].length > 0" class="loading text-center">
               <v-progress-circular
                 indeterminate
                 color="primary"
-                v-show="tabsState[category].showGetMoreLoading"
+                v-show="tabsState[item.category].showGetMoreLoading"
               ></v-progress-circular>
             </div>
           </v-list>
@@ -108,19 +108,14 @@
 
 <script>
 import TABS from '@/data/tabs'
-
-let tabsMap = {}
-
-TABS.forEach(item => {
-  tabsMap[item.category] = item.name
-})
+import TABS_MAP from '@/data/tabs-map'
 
 const NUM_PER_PAGE = 20
 
 let primaryData = {
-  currTab: null,
+  currTab: 0,
   tabs: TABS,
-  tabsMap: tabsMap,
+  tabsMap: TABS_MAP,
   tabsData: {},
   tabsState: {},
   showRefreshLoading: false,
@@ -145,10 +140,20 @@ export default {
   },
   created () {
     this.accessToken = this.$localStorage.get('accessToken')
-
     if (this.accessToken) {
       this.getUnreadCount()
     }
+
+    let selectedTabs = this.$localStorage.get('selectedTabs')
+    if (selectedTabs) {
+      this.updateTabs(selectedTabs.split(','))
+    } else {
+      // 最多显示5个tab
+      this.tabs = TABS.slice(0, 5)
+      this.$localStorage.set('selectedTabs', Object.keys(TABS_MAP).slice(0, 5).join(','))
+    }
+
+    this.getTabListData(this.currTab)
   },
   mounted () {
     this.$nextTick(() => {
@@ -169,14 +174,14 @@ export default {
 
         listViewHeight = window.innerHeight - paddingTop - paddingBottom
 
-        Object.keys(this.tabsData).forEach(category => {
-          let el = this.$refs[`tab_item_${category}`][0].$el
+        this.tabs.forEach(tab => {
+          let el = this.$refs[`tab_item_${tab.category}`][0].$el
           el.style['height'] = listViewHeight + 'px'
           el.style['overflow-y'] = 'auto'
         })
       }
     },
-    onTabsChange (index) {
+    getTabListData (index) {
       let category = this.tabs[index].category
 
       if (this.tabsData[category] && this.tabsData[category].length === 0) {
@@ -207,7 +212,6 @@ export default {
       if (Math.round(el.scrollTop) >= list.offsetHeight - listViewHeight) {
         let state = this.tabsState[category]
         state.showGetMoreLoading = true
-        // this.getMoreListData()
         this.ajax('/topics', {
           params: {
             tab: category === 'all' ? '' : category,
@@ -242,6 +246,16 @@ export default {
           this.unreadCount = data.data
         }
       })
+    },
+    updateTabs (selects) {
+      let newTabs = []
+      TABS.forEach(item => {
+        if (selects.indexOf(item.category) > -1) {
+          newTabs.push(item)
+        }
+      })
+      this.tabs = newTabs
+      this.$localStorage.set('selectedTabs', selects.join(','))
     }
   }
 }

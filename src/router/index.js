@@ -73,6 +73,13 @@ export default new Router({
       component: Settings
     },
     {
+      path: '/settings/tabs',
+      component: Settings,
+      props: {
+        chooseTabs: true
+      }
+    },
+    {
       path: '/about',
       component: About
     }
