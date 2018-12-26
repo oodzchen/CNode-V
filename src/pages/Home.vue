@@ -66,7 +66,7 @@
                       </v-avatar>
                       {{item.author.loginname}}
                     </router-link> -->
-                    <v-chip small text-color="grey darken-2">{{tabsMap[item.tab]}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
+                    <v-chip small text-color="grey darken-2">{{tabsMap[item.tab] || '未知'}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>

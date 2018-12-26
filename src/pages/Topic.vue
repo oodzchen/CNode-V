@@ -39,7 +39,7 @@
                 <v-avatar size="24">
                   <img :src="currTopic.author.avatar_url">
                 </v-avatar> {{currTopic.author.loginname}}
-              </router-link> • 发布于{{currTopic.create_at | timeFormattor}} • {{currTopic.visit_count}}次浏览 • 来自{{tabsMap[currTopic.tab]}}
+              </router-link> • 发布于{{currTopic.create_at | timeFormattor}} • {{currTopic.visit_count}}次浏览 • 来自{{tabsMap[currTopic.tab] || '未知'}}
             </div>
           </div>
         </v-card-title>
@@ -192,13 +192,7 @@
 
 
 <script>
-import TABS from '@/data/tabs'
-
-let tabsMap = {}
-
-TABS.forEach(item => {
-  tabsMap[item.category] = item.name
-})
+import TABS_MAP from '@/data/tabs-map'
 
 export default {
   props: [ 'id', 'reply' ],
@@ -207,7 +201,7 @@ export default {
       valid: true,
       currTopic: {},
       showRepliesLoading: false,
-      tabsMap: tabsMap,
+      tabsMap: TABS_MAP,
       accessToken: null,
       replyContent: '',
       replyRules: [
