@@ -198,7 +198,7 @@ export default {
       }
     },
     onTabListScroll: debounce(function () {
-      if (Math.round(this.scrollTop()) >= document.documentElement.offsetHeight - window.innerHeight) {
+      if (Math.ceil(this.scrollTop()) >= document.documentElement.offsetHeight - window.innerHeight) {
         let state = this.tabsState[this.currCategory]
         this.showGetMoreLoading = true
         this.ajax('/topics', {
