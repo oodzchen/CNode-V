@@ -100,7 +100,7 @@
 <script>
 import TABS from '@/data/tabs'
 import TABS_MAP from '@/data/tabs-map'
-import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 const NUM_PER_PAGE = 20
 
@@ -197,7 +197,7 @@ export default {
         return Math.max(window.document.documentElement.scrollTop, window.document.body.scrollTop)
       }
     },
-    onTabListScroll: throttle(function () {
+    onTabListScroll: debounce(function () {
       if (Math.round(this.scrollTop()) >= document.documentElement.offsetHeight - window.innerHeight) {
         let state = this.tabsState[this.currCategory]
         this.showGetMoreLoading = true
