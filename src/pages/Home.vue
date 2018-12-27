@@ -1,6 +1,6 @@
 <template>
   <page-container drawer ref="container" @loginuser="data => loginUser = data">
-    <v-toolbar app tabs dark class="top-toolbar" color="primary">
+    <v-toolbar app tabs dark scroll-toolbar-off-screen class="top-toolbar" color="primary">
       <v-btn icon @click="$refs.container.toggleDrawer()">
         <v-avatar v-if="accessToken && loginUser" size="30" color="accent">
           <img :src="loginUser.avatar_url">
@@ -38,50 +38,33 @@
       <div class="loading text-center" v-show="showRefreshLoading">
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
       </div>
-      <v-tabs-items v-model="currTab">
-        <v-tab-item
-          v-for="(item, index) in tabs"
-          :key="index"
-          :ref="`tab_item_${item.category}`"
-          @scroll="onTabListScroll(item.category)"
-          class="tab-item-wrap"
-        >
-          <v-list v-if="tabsData[item.category].length > 0" light three-line class="tab-list">
-            <template v-for="(item, index) in tabsData[item.category]">
-              <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
-              <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
-                <v-list-tile-avatar>
-                  <img :src="item.author.avatar_url">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    <v-icon v-if="item.top" color="primary" small>fa-thumbtack</v-icon>
-                    <v-icon v-if="item.good" color="primary" small>fa-star</v-icon>
-                    {{item.title}}
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    <!-- <router-link tag="span" :to="`/user/${item.author.loginname}`">
-                      <v-avatar size="24">
-                        <img :src="item.author.avatar_url">
-                      </v-avatar>
-                      {{item.author.loginname}}
-                    </router-link> -->
-                    <v-chip small text-color="grey darken-2">{{tabsMap[item.tab] || '未知'}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </template>
-            <div v-if="tabsData[item.category].length > 0" class="loading text-center">
-              <v-progress-circular
-                indeterminate
-                color="primary"
-                v-show="tabsState[item.category].showGetMoreLoading"
-              ></v-progress-circular>
-            </div>
-          </v-list>
-        </v-tab-item>
-      </v-tabs-items>
-
+      <v-list v-if="tabsData[this.currCategory].length > 0" light three-line class="tab-list">
+        <template v-for="(item, index) in tabsData[this.currCategory]">
+          <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
+          <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
+            <v-list-tile-avatar>
+              <img :src="item.author.avatar_url">
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>
+                <v-icon v-if="item.top" color="primary" small>fa-thumbtack</v-icon>
+                <v-icon v-if="item.good" color="primary" small>fa-star</v-icon>
+                {{item.title}}
+              </v-list-tile-title>
+              <v-list-tile-sub-title>
+                <v-chip small text-color="grey darken-2">{{tabsMap[item.tab] || '未知'}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
+              </v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+        <div v-if="tabsData[this.currCategory].length > 0" class="loading text-center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            v-show="showGetMoreLoading"
+          ></v-progress-circular>
+        </div>
+      </v-list>
       <v-btn
         fixed
         fab 
@@ -128,6 +111,7 @@ let primaryData = {
   tabsData: {},
   tabsState: {},
   showRefreshLoading: false,
+  showGetMoreLoading: false,
   loginUser: null,
   accessToken: null,
   unreadCount: 0
@@ -136,12 +120,9 @@ let primaryData = {
 TABS.forEach(tab => {
   primaryData.tabsData[tab.category] = []
   primaryData.tabsState[tab.category] = {
-    showGetMoreLoading: false,
     currPage: 1
   }
 })
-
-let listViewHeight = 0
 
 export default {
   data () {
@@ -175,31 +156,12 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      this.setTabListStyle()
-    })
-
-    window.addEventListener('resize', this.setTabListStyle.bind(this), false)
+    window.addEventListener('scroll', this.onTabListScroll.bind(this), false)
   },
   beforeDestroy () {
     this.showDrawer = false
   },
   methods: {
-    setTabListStyle () {
-      if (this.$refs && this.$refs.content) {
-        let contentStyles = window.getComputedStyle(this.$refs.content.$el)
-        let paddingTop = Number(contentStyles['padding-top'].replace(/px$/, ''))
-        let paddingBottom = Number(contentStyles['padding-bottom'].replace(/px$/, ''))
-
-        listViewHeight = window.innerHeight - paddingTop - paddingBottom
-
-        this.tabs.forEach(tab => {
-          let el = this.$refs[`tab_item_${tab.category}`][0].$el
-          el.style['height'] = listViewHeight + 'px'
-          el.style['overflow-y'] = 'auto'
-        })
-      }
-    },
     onTabChange () {
       if (this.currTabData.length === 0) {
         this.getTabListData()
@@ -217,6 +179,7 @@ export default {
         .then(data => {
           if (data.success) {
             this.tabsData[this.currCategory] = data.data
+            this.tabsState[this.currCategory].currPage = 1
             this.$nextTick(() => {
               this.cacheTopics(data.data)
             })
@@ -226,28 +189,34 @@ export default {
           this.showRefreshLoading = false
         })
     },
-    onTabListScroll: throttle(function (category) {
-      let el = this.$refs[`tab_item_${category}`][0].$el
-      let list = el.children[0]
-      if (Math.round(el.scrollTop) >= list.offsetHeight - listViewHeight) {
-        let state = this.tabsState[category]
-        state.showGetMoreLoading = true
+    scrollTop (num) {
+      if (typeof num === 'number' && !window.isNaN(num)) {
+        window.document.documentElement.scrollTop = 0
+        window.document.body.scrollTop = 0
+      } else {
+        return Math.max(window.document.documentElement.scrollTop, window.document.body.scrollTop)
+      }
+    },
+    onTabListScroll: throttle(function () {
+      if (Math.round(this.scrollTop()) >= document.documentElement.offsetHeight - window.innerHeight) {
+        let state = this.tabsState[this.currCategory]
+        this.showGetMoreLoading = true
         this.ajax('/topics', {
           params: {
-            tab: category === 'all' ? '' : category,
+            tab: this.currCategory === 'all' ? '' : this.currCategory,
             limit: NUM_PER_PAGE,
             page: ++state.currPage
           }
         }).then(data => {
           if (data.success) {
-            this.tabsData[category].push(...data.data)
+            this.tabsData[this.currCategory].push(...data.data)
             this.$nextTick(() => {
               this.cacheTopics(data.data)
             })
           }
         })
           .finally(() => {
-            state.showGetMoreLoading = false
+            this.showGetMoreLoading = false
           })
       }
     }, 100),
@@ -279,8 +248,7 @@ export default {
     },
     onTabClick (tab, index) {
       if (index === this.currTab) {
-        let listWrap = this.$refs[`tab_item_${tab.category}`][0].$el
-        listWrap.scrollTop = 0
+        this.scrollTop(0)
         this.getTabListData()
       }
     }
