@@ -176,13 +176,13 @@
   .markdown-text p:last-child
     margin-bottom: 0
 
-.reply-entry
+.v-card.reply-entry
   position: fixed
   left: 0
   bottom: 0
   width: 100%
   padding: 5px 16px
-  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3)
+  box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2)
 
 .reply-topic-title
   padding: 16px
