@@ -8,7 +8,7 @@
     </template>
     <v-card flat>
       <v-card-title>
-        <h1>CNode-PWA 0.9.3</h1>
+        <h1>CNode-PWA 0.9.4</h1>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
