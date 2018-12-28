@@ -50,7 +50,10 @@ export default {
   },
   created () {
     bus.$on('snackshow', this.onSnackShow.bind(this))
-    bus.$on('themecolor', color => { this.themeColor = color })
+    bus.$on('themecolor', color => {
+      this.themeColor = color
+      window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[color]
+    })
   },
   methods: {
     onSnackShow (type, text) {
