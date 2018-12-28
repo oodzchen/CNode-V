@@ -12,7 +12,7 @@ import VueLocalStorage from 'vue-localstorage'
 import VueAnalytics from 'vue-analytics'
 import timeFormattor from '@/utils/time-formattor'
 
-import PageContainer from './pages/components/PageContainer'
+import PageContainer from '@/components/PageContainer'
 
 Vue.use(VueLocalStorage)
 Vue.use(Vuetify, {
