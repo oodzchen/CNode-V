@@ -30,13 +30,6 @@ export default {
       return text
     }
   },
-  created () {
-    this.themeColor = this.$localStorage.get('themeColor') || 'primary'
-    bus.$on('themecolor', color => { this.themeColor = color })
-    if (this.themeColor === 'dark') {
-      this.nightMode = true
-    }
-  },
   methods: {
     async ajax (path, options) {
       let config = Object.assign({

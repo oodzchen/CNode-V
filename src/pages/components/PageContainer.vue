@@ -138,9 +138,14 @@ export default {
     }
   },
   created () {
+    this.themeColor = this.$localStorage.get('themeColor') || 'primary'
+    bus.$on('themecolor', color => { this.themeColor = color })
+    if (this.themeColor === 'dark') {
+      this.nightMode = true
+    }
+
     this.accessToken = this.$localStorage.get('accessToken')
     let loginUser = this.$localStorage.get('loginUser')
-
     if (this.accessToken) {
       if (loginUser) {
         this.loginUser = JSON.parse(loginUser)
