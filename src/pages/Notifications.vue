@@ -10,7 +10,7 @@
         <v-icon>fa-check-double</v-icon>
       </v-btn>
     </template>
-    <v-list three-line class="tab-list noties-list">
+    <v-list v-if="allMessages.length" three-line class="tab-list noties-list">
       <template v-for="(item, index) in allMessages">
         <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
         <v-list-tile 
