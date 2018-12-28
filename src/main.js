@@ -10,6 +10,7 @@ import 'vuetify/dist/vuetify.min.css'
 import mixins from './mixins/global-mixins'
 import VueLocalStorage from 'vue-localstorage'
 import VueAnalytics from 'vue-analytics'
+import timeFormattor from '@/utils/time-formattor'
 
 import PageContainer from './pages/components/PageContainer'
 
@@ -44,6 +45,7 @@ Vue.use(VueAnalytics, {
 Vue.component('page-container', PageContainer)
 
 Vue.mixin(mixins)
+Vue.filter('timeFormattor', timeFormattor)
 
 Vue.config.productionTip = false
 
