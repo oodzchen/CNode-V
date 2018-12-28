@@ -93,5 +93,11 @@ export default new Router({
       path: '/about',
       component: About
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })
