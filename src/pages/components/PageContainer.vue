@@ -3,7 +3,7 @@
     <v-toolbar 
       app
       dark
-      :scroll-toolbar-off-screen="isHome"
+      :scroll-off-screen="isHome"
       :tabs="isHome"
       :color="themeColor">
       <slot name="toolbar"></slot>
