@@ -101,6 +101,7 @@
 <script>
 import tabs from '@/data/tabs'
 import TABS_MAP from '@/data/tabs-map'
+import bus from '@/utils/bus'
 
 export default {
   props: {
@@ -158,6 +159,7 @@ export default {
         this.$localStorage.set('loginUserId', id)
         this.$localStorage.set('loginUser', data)
       }
+      bus.$emit('themecolor', 'primary')
     },
     isDisabled (category) {
       return category === 'all' ||

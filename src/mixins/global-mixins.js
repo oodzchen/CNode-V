@@ -31,7 +31,8 @@ export default {
     }
   },
   created () {
-    this.themeColor = this.$localStorage.get('themeColor') || this.themeColor
+    this.themeColor = this.$localStorage.get('themeColor') || 'primary'
+    bus.$on('themecolor', color => { this.themeColor = color })
     if (this.themeColor === 'dark') {
       this.nightMode = true
     }
