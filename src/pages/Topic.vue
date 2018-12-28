@@ -152,10 +152,12 @@
   .markdown-text
     word-break: break-all
     code
+    kbd
       padding-left: 7px
       padding-right: 7px
       max-width: 100%
       overflow: auto
+      white-space: unset
 
 
 .replies-top
