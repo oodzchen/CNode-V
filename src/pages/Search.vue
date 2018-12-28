@@ -1,16 +1,13 @@
 <template>
   <page-container>
-    <v-toolbar app class="top-toolbar">
+    <template slot="toolbar">
       <v-text-field 
         prepend-inner-icon="search" 
         label="搜索" 
         single-line
         v-model="keywords"
         @keyup.enter="onSubmit"></v-text-field>
-    </v-toolbar>
-    <v-content>
-
-    </v-content>
+    </template>
   </page-container>
 </template>
 

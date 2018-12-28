@@ -1,14 +1,14 @@
 <template>
   <page-container>
-    <v-toolbar dark color="primary" fixed class="page-toolbar">
-      <v-btn icon dark @click="$router.go(-1)">
+    <template slot="toolbar">
+      <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>登录</v-toolbar-title>
-    </v-toolbar>
-    <v-card flat class="login text-center">
+    </template>
+    <v-card flat class="text-center">
       <v-card-text>  
-        <v-btn icon fab color="primary" @click="showCamera = true">
+        <v-btn icon fab color="primary" to="/login/camera">
           <v-icon>fa-camera</v-icon>
         </v-btn>
         <v-text-field v-model="accessToken" label="输入Access Token"></v-text-field>
@@ -21,85 +21,22 @@
       </v-card-text>
     </v-card>
 
-    <v-dialog 
-      v-if="showCamera" 
-      v-model="showCamera"
-      fullscreen>
-      <v-card flat>
-        <v-toolbar color="primary" fixed class="page-toolbar">
-          <v-btn icon dark @click="showCamera = false">
-            <v-icon>fa-times</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <!-- <qrcode-stream @decode="onDecode" @init="onInit" /> -->
-        <qrcode-drop-zone @decode="onDecode" @init="logErrors">
-          <qrcode-stream @decode="onDecode" @init="onInit" />
-        </qrcode-drop-zone>
-
-        <qrcode-capture v-if="noStreamApiSupport" @decode="onDecode" />
-      </v-card>
-    </v-dialog>
+    <router-view
+      @cameraerror="onCameraError"
+      @cameradecode="onCameraDecod"></router-view>
   </page-container>
 </template>
 
-<style lang="stylus">
-.login
-  padding: 15px 0
-</style>
-
 <script>
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
 
 export default {
   props: ['redirect'],
   data () {
     return {
-      accessToken: '',
-      showCamera: false,
-      error: '',
-      noStreamApiSupport: false
+      accessToken: ''
     }
   },
-  components: {
-    QrcodeStream,
-    QrcodeDropZone,
-    QrcodeCapture
-  },
   methods: {
-    onDecode (result) {
-      console.log(result)
-      this.showCamera = false
-      this.accessToken = result
-      this.login()
-    },
-    logErrors (promise) {
-      this.showCamera = false
-      promise.catch(console.error)
-    },
-    async onInit (promise) {
-      try {
-        await promise
-      } catch (error) {
-        if (error.name === 'NotAllowedError') {
-          this.error = 'ERROR: 你需要授予相机权限'
-        } else if (error.name === 'NotFoundError') {
-          this.error = 'ERROR: 此设备没有相机'
-        } else if (error.name === 'NotSupportedError') {
-          this.error = 'ERROR: 必须为安全环境 (HTTPS, localhost)'
-        } else if (error.name === 'NotReadableError') {
-          this.error = 'ERROR: 相机是否被占用?'
-        } else if (error.name === 'OverconstrainedError') {
-          this.error = 'ERROR: 当前相机不匹配'
-        } else if (error.name === 'StreamApiNotSupportedError') {
-          this.noStreamApiSupport = true
-          this.error = 'ERROR: 当前浏览器不支持Stream Api'
-        }
-
-        this.showCamera = false
-
-        this.alert('error', this.error)
-      }
-    },
     login () {
       if (this.accessToken.trim().length === 0) return
 
@@ -120,6 +57,13 @@ export default {
           this.$router.replace('/')
         }
       })
+    },
+    onCameraDecod (result) {
+      this.accessToken = result
+      this.login()
+    },
+    onCameraError (err) {
+      this.alert('error', err)
     }
   }
 }

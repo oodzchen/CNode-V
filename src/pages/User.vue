@@ -1,10 +1,10 @@
 <template>
   <page-container>
-    <v-toolbar color="primary" fixed dark class="page-toolbar">
+    <template slot="toolbar">
       <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
-    </v-toolbar>
+    </template>
 
     <v-card flat class="user-card text-center">
       <v-progress-circular
@@ -34,14 +34,12 @@
         v-for="(data, category) in tabsData"
         :key="category"
       >
-        <v-list three-line class="tab-list">
+        <v-list v-if="data.length" three-line class="tab-list">
           <template v-for="(item, index) in data">
             <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
-            <v-list-tile :key="index + '_tile'">
+            <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
               <v-list-tile-content>
-                <router-link tag="div" :to="`/topic/${item.id}`">
-                  <v-list-tile-title>{{item.title}}</v-list-tile-title>
-                </router-link>
+                <v-list-tile-title>{{item.title}}</v-list-tile-title>
                 <v-list-tile-sub-title>
                   <v-avatar size="24">
                     <img :src="item.author.avatar_url">
@@ -51,27 +49,27 @@
               </v-list-tile-content>
             </v-list-tile>
           </template>
-          <div v-if="category !== 'collect_topics'" class="loading text-center">
-            <v-progress-circular
-              indeterminate
-              color="primary"
-              v-show="showGetUserLoading"
-            ></v-progress-circular>
-            <div v-show="!showGetUserLoading && data.length === 0" class="grey--text">
-              暂无内容
-            </div>
-          </div>
-          <div v-else class="loading text-center">
-            <v-progress-circular
-              indeterminate
-              color="primary"
-              v-show="showGetCollectLoading"
-            ></v-progress-circular>
-            <div v-show="!showGetCollectLoading && data.length === 0" class="grey--text">
-              暂无内容
-            </div>
-          </div>
         </v-list>
+        <div v-if="category !== 'collect_topics'" class="loading text-center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            v-show="showGetUserLoading"
+          ></v-progress-circular>
+          <div v-show="!showGetUserLoading && data.length === 0" class="grey--text">
+            暂无内容
+          </div>
+        </div>
+        <div v-else class="loading text-center">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            v-show="showGetCollectLoading"
+          ></v-progress-circular>
+          <div v-show="!showGetCollectLoading && data.length === 0" class="grey--text">
+            暂无内容
+          </div>
+        </div>
       </v-tab-item>
     </v-tabs-items>
   </page-container>

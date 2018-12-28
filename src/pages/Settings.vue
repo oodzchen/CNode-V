@@ -1,39 +1,37 @@
 <template>
   <page-container :show-bottom-nav="false">
-    <v-toolbar app tabs dark class="top-toolbar" color="primary">
+    <template slot="toolbar">
       <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>设置</v-toolbar-title>
-    </v-toolbar>
-    <v-content>
-      <v-list>
-        <v-list-tile to="/settings/tabs">
-          <v-list-tile-action>
-            <v-icon>fa-th-large</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>首页板块</v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="clearCacheSheet = true">
-          <v-list-tile-action>
-            <v-icon>fa-hdd</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>清除缓存</v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile v-if="accessToken" @click="logoutSheet = true">
-          <v-list-tile-action>
-            <v-icon>fa-sign-out-alt</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>退出</v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile to="/about">
-          <v-list-tile-action>
-            <v-icon>fa-info-circle</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>关于</v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-content>
+    </template>
+    <v-list>
+      <v-list-tile to="/settings/tabs">
+        <v-list-tile-action>
+          <v-icon>fa-th-large</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>首页板块</v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile @click="clearCacheSheet = true">
+        <v-list-tile-action>
+          <v-icon>fa-hdd</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>清除缓存</v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile v-if="accessToken" @click="logoutSheet = true">
+        <v-list-tile-action>
+          <v-icon>fa-sign-out-alt</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>退出</v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile to="/about">
+        <v-list-tile-action>
+          <v-icon>fa-info-circle</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>关于</v-list-tile-content>
+      </v-list-tile>
+    </v-list>
 
     <v-bottom-sheet v-model="clearCacheSheet">
       <v-list>
@@ -65,7 +63,7 @@
       transition="dialog-bottom-transition"
       v-model="chooseTabs">
       <v-card flat>
-        <v-toolbar dark color="primary" fixed class="page-toolbar">
+        <v-toolbar dark :color="themeColor" fixed class="page-toolbar">
           <v-btn icon @click="$router.go(-1)">
             <v-icon>fa-arrow-left</v-icon>
           </v-btn>

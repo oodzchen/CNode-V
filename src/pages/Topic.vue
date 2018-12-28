@@ -1,20 +1,19 @@
 <template>
   <page-container :show-bottom-nav="false" @loginuser="onLoginUser">
-    <v-toolbar color="primary" fixed class="page-toolbar">
-      <v-btn icon dark @click="$router.go(-1)">
+    <template slot="toolbar">
+      <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-times</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-if="currTopic.is_collect" icon dark @click="cancelCollectTopic">
+      <v-btn v-if="currTopic.is_collect" icon @click="cancelCollectTopic">
         <v-icon>fas fa-bookmark</v-icon>
       </v-btn>
-      <v-btn v-else icon dark @click="collectTopic">
+      <v-btn v-else icon @click="collectTopic">
         <v-icon>far fa-bookmark</v-icon>
       </v-btn>
       <v-menu v-if="loginUser && currTopic.author && currTopic.author.loginname === loginUser.loginname" bottom left>
         <v-btn
           slot="activator"
-          dark
           icon
         >
           <v-icon>fa-ellipsis-v</v-icon>
@@ -25,7 +24,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-    </v-toolbar>
+    </template>
 
     <div class="topic-wrap">
       <v-card flat class="topic" @click="clickInject">
@@ -96,9 +95,17 @@
       </div>
     </div>
 
-    <div class="reply-entry">
-      <input type="text" readonly placeholder="添加评论" @click.prevent="doReply()">
-    </div>
+    <v-card flat class="reply-entry">
+      <v-text-field
+        readonly
+        placeholder="添加评论"
+        @click.prevent="doReply()"
+        single-line
+        solo
+        flat
+        hide-details
+      ></v-text-field>
+    </v-card>
 
     <v-dialog 
       fullscreen
@@ -106,17 +113,17 @@
       transition="dialog-bottom-transition"
       v-model="reply">
       <v-card flat>
-        <v-toolbar color="primary" fixed class="page-toolbar">
-          <v-btn icon dark @click="$router.go(-1)">
+        <v-toolbar dark :color="themeColor" fixed>
+          <v-btn icon @click="$router.go(-1)">
             <v-icon>fa-arrow-left</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn dark icon @click="sendReply">
+          <v-btn icon @click="sendReply">
             <v-icon>fa-paper-plane</v-icon>
           </v-btn>
         </v-toolbar>
-        <div class="reply-box">
-          <p>{{currTopic.title}}</p>
+        <v-content>
+          <div class="reply-topic-title">{{currTopic.title}}</div>
           <v-divider></v-divider>
           <v-form v-model="valid" ref="form">
             <v-textarea 
@@ -130,7 +137,7 @@
               autofocus
             ></v-textarea>
           </v-form>
-        </div>
+        </v-content>
       </v-card>
     </v-dialog>
   </page-container>
@@ -174,20 +181,11 @@
   left: 0
   bottom: 0
   width: 100%
-  background-color: #f8f8f8
-  padding: 10px
-  input 
-    width: 100%;
-    height: 40px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 4px;
+  padding: 5px 16px
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.3)
 
-.reply-box
-  padding: 15px;
-
-  .v-divider
-    padding-bottom: 16px
+.reply-topic-title
+  padding: 16px
 </style>
 
 

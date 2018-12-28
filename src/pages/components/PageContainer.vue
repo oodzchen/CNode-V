@@ -1,6 +1,17 @@
 <template>
   <div class="page-container">
-    <slot></slot>
+    <v-toolbar 
+      app
+      dark
+      :scroll-toolbar-off-screen="isHome"
+      :tabs="isHome"
+      :color="themeColor">
+      <slot name="toolbar"></slot>
+      <slot name="toolbar-extension" slot="extension"></slot>
+    </v-toolbar>
+    <v-content>
+      <slot></slot>
+    </v-content>
     <v-navigation-drawer
       v-if="drawer"
       app
@@ -42,50 +53,18 @@
           <v-list-tile-action><v-icon>fa-comment-alt</v-icon></v-list-tile-action>
           <v-list-tile-content>反馈</v-list-tile-content>
         </v-list-tile>
+        <v-list-tile>
+          <v-switch
+            label="夜间模式"
+            v-model="nightMode"
+          ></v-switch>
+        </v-list-tile>
       </v-list>
-      <!-- <v-layout justify-space-between class="drawer-btm">
-        <v-btn flat left to="/settings" class="btn-settings">
-          <v-icon color="grey">fa-cog</v-icon> 设置
-        </v-btn>
-        <v-btn icon>
-          <v-icon color="grey">fa-moon</v-icon>
-        </v-btn>
-      </v-layout> -->
     </v-navigation-drawer>
 
     <div class="page-loading text-center" v-show="loading">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
-
-    <!-- <v-bottom-nav 
-      v-show="showBottomNav"
-      fixed
-      app
-      :value="true"
-      :active.sync="currNav"
-    >
-      <v-btn value="home" to="/" exact>
-        <v-icon>fa-home</v-icon>
-      </v-btn>
-      <v-btn value="search" to="/search">
-        <v-icon>fa-search</v-icon>
-      </v-btn>
-      <v-btn value="new" to="/new">
-        <v-icon>fa-plus-circle</v-icon>
-      </v-btn>
-      <v-btn value="notifications" to="/notifications">
-        <v-badge
-          overlap
-          color="red"
-        >
-          <span v-if="unreadCount > 0" slot="badge">{{unreadCount}}</span>
-          <v-icon>fa-bell</v-icon>
-        </v-badge>
-      </v-btn>
-      <v-btn value="account" to="/account">
-        <v-icon>fa-user</v-icon>
-      </v-btn>
-    </v-bottom-nav> -->
   </div>
 </template>
 
@@ -138,6 +117,10 @@ export default {
     drawer: {
       default: false,
       type: Boolean
+    },
+    isHome: {
+      default: false,
+      type: Boolean
     }
   },
   name: 'page-container',
@@ -149,8 +132,17 @@ export default {
       showDrawer: false,
       accessToken: null,
       loginUserId: null,
-      loginUser: null
+      loginUser: null,
+      nightMode: false
       // unreadCount: 0
+    }
+  },
+  watch: {
+    nightMode (newVal) {
+      let color = newVal ? 'dark' : 'primary'
+      this.themeColor = color
+      this.$localStorage.set('themeColor', color)
+      bus.$emit('themecolor', color)
     }
   },
   created () {

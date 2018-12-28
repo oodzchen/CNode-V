@@ -1,27 +1,21 @@
 <template>
   <page-container drawer ref="container" @loginuser="data => loginUser = data">
-    <v-toolbar app color="primary" fixed class="page-toolbar" dark>
-      <!-- <v-btn icon @click="$refs.container.toggleDrawer()">
-        <v-avatar v-if="loginUser" size="30" color="accent">
-          <img :src="loginUser.avatar_url">
-        </v-avatar>
-        <v-icon v-else>fa-user</v-icon>
-      </v-btn> -->
-      <v-btn icon dark @click="$router.go(-1)">
+    <template slot="toolbar">
+      <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-arrow-left</v-icon>
       </v-btn>
       <v-toolbar-title>提醒</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon dark @click="markAllAsRead">
+      <v-btn icon @click="markAllAsRead">
         <v-icon>fa-check-double</v-icon>
       </v-btn>
-    </v-toolbar>
-    <v-list light three-line class="tab-list noties-list">
+    </template>
+    <v-list three-line class="tab-list noties-list">
       <template v-for="(item, index) in allMessages">
         <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
         <v-list-tile 
           :key="index + '_tile'" 
-          :class="{unread: !item.has_read}"
+          :class="{read: item.has_read}"
           :to="`/topic/${item.topic.id}`"
           @click="markAsRead(item, index)"
         >
@@ -37,24 +31,20 @@
           </v-list-tile-content>
         </v-list-tile>
       </template>
-      <div class="loading text-center">
-        <v-progress-circular v-show="showGetNotiesLoading" indeterminate color="primary"></v-progress-circular>
-        <div v-show="!showGetNotiesLoading && unread.length === 0 && read.length === 0" class="grey--text">
-          暂无内容
-        </div>
-      </div>
     </v-list>
+    <div class="loading text-center">
+      <v-progress-circular v-show="showGetNotiesLoading" indeterminate color="primary"></v-progress-circular>
+      <div v-show="!showGetNotiesLoading && unread.length === 0 && read.length === 0" class="grey--text">
+        暂无内容
+      </div>
+    </div>
   </page-container>
 </template>
 
 <style lang="stylus">
 .noties-list
-  .v-list__tile__title
-    color: rgba(0, 0, 0, 0.5)
-  .unread
-    background-color: #f8f8f8
-    .v-list__tile__title
-      color: #333!important
+  .read
+    opacity: .6
 </style>
 
 

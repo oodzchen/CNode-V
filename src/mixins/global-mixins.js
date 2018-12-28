@@ -4,6 +4,7 @@ import bus from '@/utils/bus'
 export default {
   data () {
     return {
+      themeColor: 'primary'
     }
   },
   filters: {
@@ -27,6 +28,12 @@ export default {
       }
 
       return text
+    }
+  },
+  created () {
+    this.themeColor = this.$localStorage.get('themeColor') || this.themeColor
+    if (this.themeColor === 'dark') {
+      this.nightMode = true
     }
   },
   methods: {

@@ -10,6 +10,7 @@ import Notifications from '@/pages/Notifications'
 import Login from '@/pages/Login'
 import Settings from '@/pages/Settings'
 import About from '@/pages/About'
+import Camera from '@/pages/Camera'
 
 Vue.use(Router)
 
@@ -66,7 +67,16 @@ export default new Router({
       component: Login,
       props: route => ({
         redirect: route.query.redirect ? decodeURIComponent(route.query.redirect) : false
-      })
+      }),
+      children: [
+        {
+          path: 'camera',
+          component: Camera,
+          props: {
+            showCamera: true
+          }
+        }
+      ]
     },
     {
       path: '/settings',

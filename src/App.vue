@@ -1,5 +1,5 @@
 <template>
-  <v-app class="app-container" >
+  <v-app :dark="themeColor === 'dark'" class="app-container" >
     <router-view></router-view>
 
     <v-snackbar
@@ -50,6 +50,7 @@ export default {
   },
   created () {
     bus.$on('snackshow', this.onSnackShow.bind(this))
+    bus.$on('themecolor', color => { this.themeColor = color })
   },
   methods: {
     onSnackShow (type, text) {

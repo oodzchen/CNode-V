@@ -1,6 +1,11 @@
 <template>
-  <page-container drawer ref="container" @loginuser="data => loginUser = data">
-    <v-toolbar app tabs dark scroll-toolbar-off-screen class="top-toolbar" color="primary">
+  <page-container
+    drawer
+    ref="container" 
+    @loginuser="data => loginUser = data"
+    :is-home="true"
+  >
+    <template slot="toolbar">
       <v-btn icon @click="$refs.container.toggleDrawer()">
         <v-avatar v-if="accessToken && loginUser" size="30" color="accent">
           <img :src="loginUser.avatar_url">
@@ -18,64 +23,62 @@
           <v-icon>fa-bell</v-icon>
         </v-badge>
       </v-btn>
-      <v-tabs 
-        slot="extension"
-        v-model="currTab" 
-        grow 
-        color="transparent"
-        slider-color="white"
-        @input="onTabChange"
-      >
-        <v-tab 
-          v-for="(item, index) in tabs" 
-          :key="index"
-          @click="onTabClick(item, index)"
-        >{{item.name}}</v-tab>
-      </v-tabs>
-    </v-toolbar>
+    </template>
+    <v-tabs 
+      slot="toolbar-extension"
+      v-model="currTab" 
+      grow 
+      color="transparent"
+      slider-color="white"
+      @input="onTabChange"
+    >
+      <v-tab 
+        v-for="(item, index) in tabs" 
+        :key="index"
+        @click="onTabClick(item, index)"
+      >{{item.name}}</v-tab>
+    </v-tabs>
 
-    <v-content ref="content">
-      <div class="loading text-center" v-show="showRefreshLoading">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    <div class="loading text-center" v-show="showRefreshLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
+    <v-list v-if="tabsData[this.currCategory].length > 0" three-line class="tab-list">
+      <template v-for="(item, index) in tabsData[this.currCategory]">
+        <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
+        <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
+          <v-list-tile-avatar>
+            <img :src="item.author.avatar_url">
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              <v-icon v-if="item.top" color="primary" small>fa-thumbtack</v-icon>
+              <v-icon v-if="item.good" color="primary" small>fa-star</v-icon>
+              {{item.title}}
+            </v-list-tile-title>
+            <v-list-tile-sub-title>
+              <v-chip small text-color="grey darken-2">{{tabsMap[item.tab] || '未知'}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
+            </v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </template>
+      <div v-if="tabsData[this.currCategory].length > 0" class="loading text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+          v-show="showGetMoreLoading"
+        ></v-progress-circular>
       </div>
-      <v-list v-if="tabsData[this.currCategory].length > 0" light three-line class="tab-list">
-        <template v-for="(item, index) in tabsData[this.currCategory]">
-          <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
-          <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
-            <v-list-tile-avatar>
-              <img :src="item.author.avatar_url">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                <v-icon v-if="item.top" color="primary" small>fa-thumbtack</v-icon>
-                <v-icon v-if="item.good" color="primary" small>fa-star</v-icon>
-                {{item.title}}
-              </v-list-tile-title>
-              <v-list-tile-sub-title>
-                <v-chip small text-color="grey darken-2">{{tabsMap[item.tab] || '未知'}}</v-chip> • {{item.author.loginname}} • {{item.reply_count}} 条回复 • {{item.create_at | timeFormattor}}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-        <div v-if="tabsData[this.currCategory].length > 0" class="loading text-center">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            v-show="showGetMoreLoading"
-          ></v-progress-circular>
-        </div>
-      </v-list>
-      <v-btn
-        fixed
-        fab 
-        dark
-        color="primary" 
-        to="/new"
-        class="btn-new"
-      >
-        <v-icon dark>fa-plus</v-icon>
-      </v-btn>
-    </v-content>
+    </v-list>
+    <v-btn
+      fixed
+      fab 
+      dark
+      color="primary" 
+      to="/new"
+      class="btn-new"
+    >
+      <v-icon dark>fa-plus</v-icon>
+    </v-btn>
   </page-container>
 </template>
 

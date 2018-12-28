@@ -1,42 +1,40 @@
 <template>
   <page-container>
-    <v-toolbar color="primary" fixed class="page-toolbar">
-      <v-btn icon dark @click="$router.go(-1)">
+    <template slot="toolbar">
+      <v-btn icon @click="$router.go(-1)">
         <v-icon>fa-times</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon dark @click="submitTopic">
+      <v-btn icon @click="submitTopic">
         <v-icon>fa-paper-plane</v-icon>
       </v-btn>
-    </v-toolbar>
-    <v-content>
-      <v-form v-model="valid" class="new" ref="form" lazy-validation>
-        <v-select
-          v-model="formTab"
-          :rules="tabRules"
-          :items="tabs"
-          item-text="text"
-          item-value="value"
-          label="选择板块"
-          required
-        >
-        </v-select>
-        <v-text-field
-          v-model="formTitle"
-          :rules="titleRules"
-          label="标题"
-          required
-        ></v-text-field>
-        <v-textarea
-          v-model="formContent"
-          :rules="contentRules"
-          solo
-          flat
-          no-resize
-          required
-        ></v-textarea>
-      </v-form>
-    </v-content>
+    </template>
+    <v-form v-model="valid" class="new" ref="form" lazy-validation>
+      <v-select
+        v-model="formTab"
+        :rules="tabRules"
+        :items="tabs"
+        item-text="text"
+        item-value="value"
+        label="选择板块"
+        required
+      >
+      </v-select>
+      <v-text-field
+        v-model="formTitle"
+        :rules="titleRules"
+        label="标题"
+        required
+      ></v-text-field>
+      <v-textarea
+        v-model="formContent"
+        :rules="contentRules"
+        solo
+        flat
+        no-resize
+        required
+      ></v-textarea>
+    </v-form>
   </page-container>
 </template>
 
