@@ -95,14 +95,11 @@
       </div>
     </div>
 
-    <v-card flat class="reply-entry">
+    <v-card flat class="reply-entry" @click.prevent="doReply()">
       <v-text-field
         readonly
         placeholder="添加评论"
-        @click.prevent="doReply()"
         single-line
-        solo
-        flat
         hide-details
       ></v-text-field>
     </v-card>
@@ -181,8 +178,11 @@
   left: 0
   bottom: 0
   width: 100%
-  padding: 5px 16px
+  padding: 8px 16px
   box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2)
+  .v-text-field
+    padding: 0
+    margin: 0
 
 .reply-topic-title
   padding: 16px
