@@ -74,6 +74,20 @@
         ></v-progress-circular>
       </div>
     </v-list>
+
+    <v-fade-transition origin="center center">
+      <v-btn
+        v-show="showToTopBtn"
+        fixed
+        fab 
+        dark
+        color="grey" 
+        @click="toTop"
+        class="btn-up"
+      >
+        <v-icon dark>fa-angle-double-up</v-icon>
+      </v-btn>
+    </v-fade-transition>
     <v-btn
       fixed
       fab 
@@ -91,6 +105,12 @@
 .btn-new
   right: 16px
   bottom: 16px
+
+.btn-up
+  right: 16px
+  bottom: 88px
+  .v-btn__content
+    opacity: 0.7
 
 .tab-list
   .theme--light.v-chip
@@ -122,7 +142,8 @@ let primaryData = {
   showGetMoreLoading: false,
   loginUser: null,
   accessToken: null,
-  unreadCount: 0
+  unreadCount: 0,
+  showToTopBtn: false
 }
 
 TABS.forEach(tab => {
@@ -167,6 +188,13 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.onTabListScroll.bind(this), false)
+    window.addEventListener('scroll', () => {
+      if (this.scrollTop() > window.innerHeight) {
+        this.showToTopBtn = true
+      } else {
+        this.showToTopBtn = false
+      }
+    }, false)
   },
   beforeDestroy () {
     this.showDrawer = false
@@ -229,7 +257,7 @@ export default {
             this.showGetMoreLoading = false
           })
       }
-    }, 100),
+    }, 50),
     cacheTopics (data) {
       data.forEach(item => {
         this.$localStorage.set(`topic_${item.id}`, JSON.stringify(item))
@@ -284,6 +312,10 @@ export default {
         default:
           break
       }
+    },
+    toTop () {
+      this.scrollTop(0)
+      this.getTabListData()
     }
   }
 }
