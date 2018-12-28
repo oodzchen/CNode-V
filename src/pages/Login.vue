@@ -40,8 +40,6 @@ export default {
     login () {
       if (this.accessToken.trim().length === 0) return
 
-      this.$localStorage.set('accessToken', this.accessToken)
-
       this.ajax('/accesstoken', {
         method: 'post',
         showloading: true,
@@ -49,6 +47,7 @@ export default {
           accesstoken: this.accessToken
         }
       }).then(data => {
+        this.$localStorage.set('accessToken', this.accessToken)
         this.$localStorage.set('loginUserId', data.loginname)
         console.log('redirect: ', this.redirect)
         if (this.redirect) {
