@@ -47,13 +47,15 @@ export default {
           accesstoken: this.accessToken
         }
       }).then(data => {
-        this.$localStorage.set('accessToken', this.accessToken)
-        this.$localStorage.set('loginUserId', data.loginname)
-        console.log('redirect: ', this.redirect)
-        if (this.redirect) {
-          this.$router.replace(this.redirect)
-        } else {
-          this.$router.replace('/')
+        if (data.success) {
+          this.$localStorage.set('accessToken', this.accessToken)
+          this.$localStorage.set('loginUserId', data.loginname)
+
+          if (this.redirect) {
+            this.$router.replace(this.redirect)
+          } else {
+            this.$router.replace('/')
+          }
         }
       })
     },

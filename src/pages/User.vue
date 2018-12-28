@@ -130,11 +130,13 @@ export default {
       this.showGetUserLoading = true
       this.ajax(`/user/${id}`)
         .then(data => {
-          this.user = data.data
+          if (data.success) {
+            this.user = data.data
 
-          for (let key in this.tabsData) {
-            if (this.user[key]) {
-              this.tabsData[key] = this.user[key]
+            for (let key in this.tabsData) {
+              if (this.user[key]) {
+                this.tabsData[key] = this.user[key]
+              }
             }
           }
         })
@@ -148,7 +150,9 @@ export default {
       this.showGetCollectLoading = true
       this.ajax(`/topic_collect/${id}`)
         .then(data => {
-          this.tabsData.collect_topics = data.data
+          if (data.success) {
+            this.tabsData.collect_topics = data.data
+          }
         })
         .finally(() => {
           this.showGetCollectLoading = false
