@@ -148,6 +148,8 @@ export default {
     this.accessToken = this.$localStorage.get('accessToken')
     if (this.accessToken) {
       this.getUnreadCount()
+    } else {
+      this.unreadCount = 0
     }
 
     let selectedTabs = this.$localStorage.get('selectedTabs')
