@@ -132,7 +132,6 @@ export default {
           data: data
         }).then(data => {
           if (data.success) {
-            this.alert('success', '发布成功')
             this.$router.replace(`/topic/${data.topic_id}`)
           }
         })

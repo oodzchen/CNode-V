@@ -4,7 +4,7 @@
 
     <v-snackbar
       v-model="showAlert"
-      top
+      bottom
       :color="alertType"
       :timeout="timeout"
     >{{alertText}}</v-snackbar>

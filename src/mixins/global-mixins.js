@@ -60,14 +60,20 @@ export default {
         this.showPageLoading()
       }
 
-      let response = await axios(config).catch(e => {
-        if (e) {
-          this.alert('error', '请求失败')
-          throw new Error(e)
-        }
-      }).finally(() => {
-        this.hidePageLoading()
-      })
+      let response = await axios(config)
+        .catch(e => {
+          if (e) {
+            let data = e.response.data
+            if (data && data.error_msg) {
+              this.alert('error', data.error_msg)
+            } else {
+              this.alert('error', '请求失败')
+            }
+            throw new Error(e)
+          }
+        }).finally((res) => {
+          this.hidePageLoading()
+        })
 
       if (!response.data.success) {
         this.alert('error', response.data.error_msg)
