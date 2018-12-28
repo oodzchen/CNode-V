@@ -62,6 +62,7 @@
                   <v-avatar size="24">
                     <img :src="reply.author.avatar_url">
                   </v-avatar> {{reply.author.loginname}}
+                  <span v-if="reply.author.loginname === currTopic.author.loginname">(作者)</span>
                 </router-link> • {{reply.create_at | timeFormattor}}
               </div>
             </v-card-title>
