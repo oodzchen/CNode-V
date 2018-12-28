@@ -121,15 +121,12 @@ export default {
   name: 'page-container',
   data () {
     return {
-      // navigations: ['home', 'search', 'new', 'notifications', 'account'],
-      currNav: null,
       loading: false,
       showDrawer: false,
       accessToken: null,
       loginUserId: null,
       loginUser: null,
       nightMode: false
-      // unreadCount: 0
     }
   },
   watch: {
@@ -141,22 +138,10 @@ export default {
     }
   },
   created () {
-    if (this.currNav === null) {
-      let path = this.$route.path.match(/^\/(\w+)(\/|$)/)
-
-      if (path) {
-        this.currNav = path[1]
-      } else {
-        this.currNav = 'home'
-      }
-    }
-
     this.accessToken = this.$localStorage.get('accessToken')
     let loginUser = this.$localStorage.get('loginUser')
 
     if (this.accessToken) {
-      // this.getUnreadCount()
-
       if (loginUser) {
         this.loginUser = JSON.parse(loginUser)
         this.$emit('loginuser', this.loginUser)
@@ -191,17 +176,6 @@ export default {
     toggleDrawer () {
       this.showDrawer = !this.showDrawer
     }
-    // getUnreadCount () {
-    //   this.ajax('/message/count', {
-    //     params: {
-    //       accesstoken: this.accessToken
-    //     }
-    //   }).then(data => {
-    //     if (data.success) {
-    //       this.unreadCount = data.data
-    //     }
-    //   })
-    // }
   }
 }
 </script>
