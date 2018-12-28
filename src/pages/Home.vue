@@ -42,8 +42,13 @@
     <div class="loading text-center" v-show="showRefreshLoading">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
-    <v-list v-if="tabsData[this.currCategory].length > 0" three-line class="tab-list">
-      <template v-for="(item, index) in tabsData[this.currCategory]">
+    <v-list
+      v-if="tabsData[currCategory].length > 0"
+      three-line
+      class="tab-list"
+      v-touch.stop.prevent="onTouch()"
+    >
+      <template v-for="(item, index) in tabsData[currCategory]">
         <v-divider v-if="index !== 0" :key="index + '_divider'"></v-divider>
         <v-list-tile :key="index + '_tile'" :to="`/topic/${item.id}`">
           <v-list-tile-avatar>
@@ -61,7 +66,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </template>
-      <div v-if="tabsData[this.currCategory].length > 0" class="loading text-center">
+      <div v-if="tabsData[currCategory].length > 0" class="loading text-center">
         <v-progress-circular
           indeterminate
           color="primary"
@@ -253,6 +258,29 @@ export default {
       if (index === this.currTab) {
         this.scrollTop(0)
         this.getTabListData()
+      }
+    },
+    onTouch () {
+      return {
+        left: e => this.onSwipe('left'),
+        right: e => this.onSwipe('right')
+      }
+    },
+    onSwipe (dir) {
+      this.scrollTop(0)
+      switch (dir) {
+        case 'left':
+          if (this.currTab < this.tabs.length - 1) {
+            this.currTab += 1
+          }
+          break
+        case 'right':
+          if (this.currTab > 0) {
+            this.currTab -= 1
+          }
+          break
+        default:
+          break
       }
     }
   }
