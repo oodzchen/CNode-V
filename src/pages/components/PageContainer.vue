@@ -18,7 +18,7 @@
       left
       v-model="showDrawer"
     >
-      <v-list>
+      <v-list class="drawer-list">
         <div class="drawer-user">
           <template v-if="loginUser">
             <router-link tag="div" :to="`/user/${loginUser.loginname}`">
@@ -54,10 +54,14 @@
           <v-list-tile-content>反馈</v-list-tile-content>
         </v-list-tile>
         <v-list-tile>
-          <v-switch
-            label="夜间模式"
-            v-model="nightMode"
-          ></v-switch>
+          <v-list-tile-action><v-icon>fa-moon</v-icon></v-list-tile-action>
+          <v-list-tile-content @click="nightMode = !nightMode">夜间模式</v-list-tile-content>
+          <v-list-tile-action>
+            <v-switch
+              v-model="nightMode"
+              hide-details
+            ></v-switch>
+          </v-list-tile-action>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -90,19 +94,10 @@
     height: 50px
     margin: 0 auto 15px
 
-.drawer-btm
-  position: absolute
-  bottom: 0
-  left: 0
-  width: 100%
-  .btn-settings
-    padding-left: 0
-    margin-left: 0
-    text-align: left
-    .v-btn__content
-      justify-content: left
-    .v-icon
-      margin-right: 10px
+.drawer-list
+  .v-input--selection-controls
+    margin: 0
+    padding: 0
 </style>
 
 <script>
