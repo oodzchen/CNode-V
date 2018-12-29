@@ -1,17 +1,5 @@
 <template>
   <div class="page-container">
-    <v-toolbar 
-      app
-      dark
-      :scroll-off-screen="isHome"
-      :tabs="isHome"
-      :color="themeColor">
-      <slot name="toolbar"></slot>
-      <slot name="toolbar-extension" slot="extension"></slot>
-    </v-toolbar>
-    <v-content>
-      <slot></slot>
-    </v-content>
     <v-navigation-drawer
       v-if="drawer"
       app
@@ -65,7 +53,19 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-
+    <v-toolbar 
+      app
+      dark
+      :scroll-off-screen="isHome"
+      :tabs="isHome"
+      :color="themeColor"
+      :key="$route.fullPath">
+      <slot name="toolbar"></slot>
+      <slot name="toolbar-extension" slot="extension"></slot>
+    </v-toolbar>
+    <v-content>
+      <slot></slot>
+    </v-content>
     <div class="page-loading text-center" v-show="loading">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>

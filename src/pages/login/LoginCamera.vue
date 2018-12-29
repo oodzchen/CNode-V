@@ -1,33 +1,22 @@
 <template>
-  <v-dialog
-    v-model="showCamera"
-    fullscreen>
-    <v-card flat>
-      <v-toolbar dark fixed :color="themeColor">
-        <v-btn icon @click="$router.go(-1)">
-          <v-icon>fa-times</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <!-- <qrcode-stream @decode="onDecode" @init="onInit" /> -->
-      <qrcode-drop-zone @decode="onDecode" @init="logErrors">
-        <qrcode-stream @decode="onDecode" @init="onInit" />
-      </qrcode-drop-zone>
-
-      <qrcode-capture v-if="noStreamApiSupport" @decode="onDecode" />
-    </v-card>
-  </v-dialog>
+  <page-container>
+    <template slot="toolbar">
+      <v-btn icon @click="$router.go(-1)">
+        <v-icon>fa-times</v-icon>
+      </v-btn>
+    </template>
+    <!-- <qrcode-stream @decode="onDecode" @init="onInit" /> -->
+    <qrcode-drop-zone @decode="onDecode" @init="logErrors">
+      <qrcode-stream @decode="onDecode" @init="onInit" />
+    </qrcode-drop-zone>
+    <qrcode-capture v-if="noStreamApiSupport" @decode="onDecode" />
+  </page-container>
 </template>
 
 <script>
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
 
 export default {
-  props: {
-    showCamera: {
-      default: false,
-      type: true
-    }
-  },
   data () {
     return {
       error: '',

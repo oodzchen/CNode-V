@@ -2,15 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/pages/Home'
-import Topic from '@/pages/Topic'
+import Topic from '@/pages/topic/Topic'
 import User from '@/pages/User'
 import Search from '@/pages/Search'
 import New from '@/pages/New'
 import Notifications from '@/pages/Notifications'
-import Login from '@/pages/Login'
-import Settings from '@/pages/Settings'
+import Login from '@/pages/login/Login'
+import Settings from '@/pages/settings/Settings'
 import About from '@/pages/About'
-import Camera from '@/pages/Camera'
 
 Vue.use(Router)
 
@@ -66,17 +65,15 @@ export default new Router({
       path: '/login',
       component: Login,
       props: route => ({
-        redirect: route.query.redirect ? decodeURIComponent(route.query.redirect) : false
-      }),
-      children: [
-        {
-          path: 'camera',
-          component: Camera,
-          props: {
-            showCamera: true
-          }
-        }
-      ]
+        redirect: route.query.redirect ? decodeURIComponent(route.query.redirect) : ''
+      })
+    },
+    {
+      path: '/login/camera',
+      component: Login,
+      props: {
+        camera: true
+      }
     },
     {
       path: '/settings',

@@ -111,31 +111,11 @@
       transition="dialog-bottom-transition"
       v-model="reply">
       <v-card flat>
-        <v-toolbar dark :color="themeColor" fixed>
-          <v-btn icon @click="$router.go(-1)">
-            <v-icon>fa-arrow-left</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="sendReply">
-            <v-icon>fa-paper-plane</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-content>
-          <div class="reply-topic-title">{{currTopic.title}}</div>
-          <v-divider></v-divider>
-          <v-form v-model="valid" ref="form">
-            <v-textarea 
-              flat
-              v-model="replyContent" 
-              :rules="replyRules"
-              solo 
-              label="你的回复"
-              no-resize
-              required
-              autofocus
-            ></v-textarea>
-          </v-form>
-        </v-content>
+        <topic-reply
+          :topic-title="currTopic.title"
+          :content="replyContent"
+          :to-reply-id="replyToReplyId"
+        ></topic-reply>
       </v-card>
     </v-dialog>
   </page-container>
@@ -186,34 +166,29 @@
   .v-text-field
     padding: 0
     margin: 0
-
-.reply-topic-title
-  padding: 16px
 </style>
 
 
 <script>
 import TABS_MAP from '@/data/tabs-map'
+import TopicReply from './TopicReply'
 
 export default {
   props: [ 'id', 'reply' ],
   data () {
     return {
-      valid: true,
       currTopic: {},
       showRepliesLoading: false,
       tabsMap: TABS_MAP,
       accessToken: null,
       replyContent: '',
-      replyRules: [
-        v => !!v || '内容不能为空'
-      ],
       replyToUserId: '',
       replyToReplyId: '',
       loginUser: null
     }
   },
-  watch: {
+  components: {
+    TopicReply
   },
   created () {
     this.accessToken = this.$localStorage.get('accessToken')
@@ -320,30 +295,6 @@ export default {
         this.replyContent = ''
       }
       this.$router.push(`/topic/${this.id}/reply`)
-    },
-    sendReply () {
-      if (this.$refs.form.validate()) {
-        let config = {
-          method: 'post',
-          showloading: true,
-          data: {
-            accesstoken: this.accessToken,
-            content: this.replyContent
-          }
-        }
-
-        if (this.replyToReplyId) {
-          config.data.reply_id = this.replyToReplyId
-        }
-
-        this.ajax(`/topic/${this.id}/replies`, config)
-          .then(data => {
-            if (data.success) {
-              this.$router.go(-1)
-              this.getTopic()
-            }
-          })
-      }
     },
     clickInject (e) {
       if (e.target.tagName.toLowerCase() === 'a') {
