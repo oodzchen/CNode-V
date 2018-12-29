@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  props: ['topicTitle', 'content', 'toReplyId'],
+  props: ['topicId', 'topicTitle', 'content', 'toReplyId', 'token'],
   data () {
     return {
       valid: true,
@@ -56,7 +56,7 @@ export default {
           method: 'post',
           showloading: true,
           data: {
-            accesstoken: this.accessToken,
+            accesstoken: this.token,
             content: this.replyContent
           }
         }
@@ -65,11 +65,11 @@ export default {
           config.data.reply_id = this.toReplyId
         }
 
-        this.ajax(`/topic/${this.id}/replies`, config)
+        this.ajax(`/topic/${this.topicId}/replies`, config)
           .then(data => {
             if (data.success) {
               this.$router.go(-1)
-              this.getTopic()
+              this.$emit('replysuccess')
             }
           })
       }

@@ -112,9 +112,12 @@
       v-model="reply">
       <v-card flat>
         <topic-reply
+          :topic-id="id"
           :topic-title="currTopic.title"
           :content="replyContent"
           :to-reply-id="replyToReplyId"
+          :token="accessToken"
+          @replysuccess="getTopic"
         ></topic-reply>
       </v-card>
     </v-dialog>
