@@ -2,11 +2,11 @@ import axios from 'axios'
 import bus from '@/utils/bus'
 
 export default {
-  data () {
-    return {
-      themeColor: 'primary'
-    }
-  },
+  // data () {
+  //   return {
+  //     themeColor: 'primary'
+  //   }
+  // },
   methods: {
     async ajax (path, options) {
       let config = Object.assign({

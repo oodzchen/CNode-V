@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import bus from '@/utils/bus'
 import SettingsTabs from './SettingsTabs'
 
 export default {
@@ -117,7 +116,6 @@ export default {
         this.$localStorage.set('loginUserId', id)
         this.$localStorage.set('loginUser', data)
       }
-      bus.$emit('themecolor', 'primary')
     }
   }
 }

@@ -43,10 +43,11 @@
         </v-list-tile>
         <v-list-tile>
           <v-list-tile-action><v-icon>fa-moon</v-icon></v-list-tile-action>
-          <v-list-tile-content @click="nightMode = !nightMode">夜间模式</v-list-tile-content>
+          <v-list-tile-content @click="toggleNightMode">夜间模式</v-list-tile-content>
           <v-list-tile-action>
             <v-switch
-              v-model="nightMode"
+              :value="nightMode"
+              @change="toggleNightMode"
               hide-details
             ></v-switch>
           </v-list-tile-action>
@@ -125,24 +126,33 @@ export default {
       showDrawer: false,
       accessToken: null,
       loginUserId: null,
-      loginUser: null,
-      nightMode: false
+      loginUser: null
+      // nightMode: false
     }
   },
   watch: {
-    nightMode (newVal) {
-      let color = newVal ? 'dark' : 'primary'
-      this.themeColor = color
-      this.$localStorage.set('themeColor', color)
-      bus.$emit('themecolor', color)
+    // nightMode (newVal) {
+    //   let color = newVal ? 'dark' : 'primary'
+    //   this.themeColor = color
+    //   this.$localStorage.set('themeColor', color)
+    //   bus.$emit('themecolor', color)
+    //   this.$store.commit('CHANGE_THEME', color)
+    // }
+  },
+  computed: {
+    themeColor () {
+      return this.$store.state.themeColor
+    },
+    nightMode () {
+      return this.$store.getters.nightMode
     }
   },
   created () {
-    this.themeColor = this.$localStorage.get('themeColor') || 'primary'
-    bus.$on('themecolor', color => { this.themeColor = color })
-    if (this.themeColor === 'dark') {
-      this.nightMode = true
-    }
+    // this.themeColor = this.$localStorage.get('themeColor') || 'primary'
+    // bus.$on('themecolor', color => { this.themeColor = color })
+    // if (this.themeColor === 'dark') {
+    //   this.nightMode = true
+    // }
 
     this.accessToken = this.$localStorage.get('accessToken')
     let loginUser = this.$localStorage.get('loginUser')
@@ -180,6 +190,10 @@ export default {
     },
     toggleDrawer () {
       this.showDrawer = !this.showDrawer
+    },
+    toggleNightMode () {
+      let color = this.themeColor === 'dark' ? 'primary' : 'dark'
+      this.$store.commit('CHANGE_THEME', color)
     }
   }
 }

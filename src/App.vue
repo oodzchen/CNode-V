@@ -48,10 +48,15 @@ export default {
       timeout: 3000
     }
   },
+  computed: {
+    themeColor () {
+      return this.$store.state.themeColor
+    }
+  },
   created () {
     bus.$on('snackshow', this.onSnackShow.bind(this))
     bus.$on('themecolor', color => {
-      this.themeColor = color
+      // this.themeColor = color
       window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[color]
     })
   },

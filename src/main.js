@@ -11,6 +11,7 @@ import mixins from './mixins/global-mixins'
 import VueLocalStorage from 'vue-localstorage'
 import VueAnalytics from 'vue-analytics'
 import timeFormattor from '@/utils/time-formattor'
+import store from '@/store'
 
 import PageContainer from '@/components/PageContainer'
 
@@ -52,6 +53,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 window.mainApp = new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
