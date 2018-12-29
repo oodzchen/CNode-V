@@ -109,8 +109,6 @@
 .btn-up
   right: 16px
   bottom: 88px
-  .v-btn__content
-    opacity: 0.7
 
 .tab-list
   .theme--light.v-chip
