@@ -9,6 +9,9 @@
       :timeout="snack.timeout"
       @input="onSnackChange"
     >{{snack.text}}</v-snackbar>
+    <div class="page-loading text-center" v-show="pageLoading">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </div>
   </v-app>
 </template>
 
@@ -34,6 +37,18 @@
     text-overflow: inherit
     white-space: normal
 
+.page-loading
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+  .v-progress-circular
+    background-color: white;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)
+
 </style>
 
 <script>
@@ -45,15 +60,17 @@ export default {
     return {
     }
   },
-  computed: mapState({
-    themeColor: state => state.themeColor,
-    snack: state => state.snack
-  }),
+  computed: mapState([
+    'themeColor',
+    'snack',
+    'pageLoading'
+  ]),
   watch: {
     $route () {
       this.$store.commit('CHANGE_SNACK', {
         show: false
       })
+      this.$store.commit('CHANGE_PAGELOADING', false)
     },
     themeColor (newVal) {
       window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[newVal]

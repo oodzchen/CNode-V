@@ -5,5 +5,6 @@ export default {
     type: '',
     text: '',
     timeout: 3000
-  }
+  },
+  pageLoading: false
 }

@@ -67,25 +67,11 @@
     <v-content>
       <slot></slot>
     </v-content>
-    <div class="page-loading text-center" v-show="loading">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-    </div>
+    
   </div>
 </template>
 
 <style lang="stylus">
-.page-loading
-  position: fixed
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-
-  .v-progress-circular
-    background-color: white;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)
-
 .drawer-user
   padding: 15px
   text-align: center
@@ -102,8 +88,6 @@
 </style>
 
 <script>
-import bus from '@/utils/bus'
-
 export default {
   props: {
     showBottomNav: {
@@ -158,20 +142,8 @@ export default {
         }
       }
     }
-
-    bus.$on('showloading', this.showLoading.bind(this))
-    bus.$on('hideloading', this.hideLoading.bind(this))
-  },
-  beforeDestroy () {
-    this.hideLoading()
   },
   methods: {
-    showLoading () {
-      this.loading = true
-    },
-    hideLoading () {
-      this.loading = false
-    },
     toggleDrawer () {
       this.showDrawer = !this.showDrawer
     },

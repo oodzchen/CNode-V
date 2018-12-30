@@ -1,5 +1,4 @@
 import axios from 'axios'
-import bus from '@/utils/bus'
 
 export default {
   methods: {
@@ -55,10 +54,10 @@ export default {
       })
     },
     showPageLoading () {
-      bus.$emit('showloading')
+      this.$store.commit('CHANGE_PAGELOADING', true)
     },
     hidePageLoading () {
-      bus.$emit('hideloading')
+      this.$store.commit('CHANGE_PAGELOADING', false)
     },
     getToken (callbackUrl, addHistory) {
       let token = this.$localStorage.get('accessToken')
