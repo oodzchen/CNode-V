@@ -2,11 +2,6 @@ import axios from 'axios'
 import bus from '@/utils/bus'
 
 export default {
-  // data () {
-  //   return {
-  //     themeColor: 'primary'
-  //   }
-  // },
   methods: {
     async ajax (path, options) {
       let config = Object.assign({
@@ -53,7 +48,6 @@ export default {
       return response.data
     },
     alert (type, text) {
-      // bus.$emit('snackshow', type, text)
       this.$store.commit('CHANGE_SNACK', {
         show: true,
         type: type,

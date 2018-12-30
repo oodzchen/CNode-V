@@ -58,9 +58,7 @@ export default {
     }
   },
   created () {
-    // bus.$on('snackshow', this.onSnackShow.bind(this))
     bus.$on('themecolor', color => {
-      // this.themeColor = color
       window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[color]
     })
   },
@@ -72,17 +70,6 @@ export default {
         })
       }
     }
-    // onSnackShow (type, text) {
-    //   this.showAlert = true
-    //   this.alertType = type
-    //   this.alertText = text
-
-    //   setTimeout(() => {
-    //     this.showAlert = false
-    //     this.alertType = ''
-    //     this.alertText = ''
-    //   }, this.timeout)
-    // }
   }
 }
 </script>
