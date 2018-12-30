@@ -37,7 +37,6 @@
 </style>
 
 <script>
-import bus from '@/utils/bus'
 import { mapState } from 'vuex'
 
 export default {
@@ -55,12 +54,10 @@ export default {
       this.$store.commit('CHANGE_SNACK', {
         show: false
       })
+    },
+    themeColor (newVal) {
+      window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[newVal]
     }
-  },
-  created () {
-    bus.$on('themecolor', color => {
-      window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[color]
-    })
   },
   methods: {
     onSnackChange (val) {
