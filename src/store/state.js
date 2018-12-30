@@ -1,3 +1,9 @@
 export default {
-  themeColor: 'primary'
+  themeColor: 'primary',
+  snack: {
+    show: false,
+    type: '',
+    text: '',
+    timeout: 3000
+  }
 }

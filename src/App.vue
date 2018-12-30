@@ -3,11 +3,12 @@
     <router-view></router-view>
 
     <v-snackbar
-      v-model="showAlert"
+      :value="snack.show"
       bottom
-      :color="alertType"
-      :timeout="timeout"
-    >{{alertText}}</v-snackbar>
+      :color="snack.type"
+      :timeout="snack.timeout"
+      @input="onSnackChange"
+    >{{snack.text}}</v-snackbar>
   </v-app>
 </template>
 
@@ -37,41 +38,51 @@
 
 <script>
 import bus from '@/utils/bus'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
   data () {
     return {
-      showAlert: false,
-      alertType: '',
-      alertText: '',
-      timeout: 3000
     }
   },
-  computed: {
-    themeColor () {
-      return this.$store.state.themeColor
+  computed: mapState({
+    themeColor: state => state.themeColor,
+    snack: state => state.snack
+  }),
+  watch: {
+    $route () {
+      this.$store.commit('CHANGE_SNACK', {
+        show: false
+      })
     }
   },
   created () {
-    bus.$on('snackshow', this.onSnackShow.bind(this))
+    // bus.$on('snackshow', this.onSnackShow.bind(this))
     bus.$on('themecolor', color => {
       // this.themeColor = color
       window.document.querySelector('meta[name="theme-color"]').content = this.$vuetify.theme[color]
     })
   },
   methods: {
-    onSnackShow (type, text) {
-      this.showAlert = true
-      this.alertType = type
-      this.alertText = text
-
-      setTimeout(() => {
-        this.showAlert = false
-        this.alertType = ''
-        this.alertText = ''
-      }, this.timeout)
+    onSnackChange (val) {
+      if (!val) {
+        this.$store.commit('CHANGE_SNACK', {
+          show: false
+        })
+      }
     }
+    // onSnackShow (type, text) {
+    //   this.showAlert = true
+    //   this.alertType = type
+    //   this.alertText = text
+
+    //   setTimeout(() => {
+    //     this.showAlert = false
+    //     this.alertType = ''
+    //     this.alertText = ''
+    //   }, this.timeout)
+    // }
   }
 }
 </script>

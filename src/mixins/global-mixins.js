@@ -53,7 +53,12 @@ export default {
       return response.data
     },
     alert (type, text) {
-      bus.$emit('snackshow', type, text)
+      // bus.$emit('snackshow', type, text)
+      this.$store.commit('CHANGE_SNACK', {
+        show: true,
+        type: type,
+        text: text
+      })
     },
     showPageLoading () {
       bus.$emit('showloading')
