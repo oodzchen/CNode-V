@@ -127,17 +127,7 @@ export default {
       accessToken: null,
       loginUserId: null,
       loginUser: null
-      // nightMode: false
     }
-  },
-  watch: {
-    // nightMode (newVal) {
-    //   let color = newVal ? 'dark' : 'primary'
-    //   this.themeColor = color
-    //   this.$localStorage.set('themeColor', color)
-    //   bus.$emit('themecolor', color)
-    //   this.$store.commit('CHANGE_THEME', color)
-    // }
   },
   computed: {
     themeColor () {
@@ -148,12 +138,6 @@ export default {
     }
   },
   created () {
-    // this.themeColor = this.$localStorage.get('themeColor') || 'primary'
-    // bus.$on('themecolor', color => { this.themeColor = color })
-    // if (this.themeColor === 'dark') {
-    //   this.nightMode = true
-    // }
-
     this.accessToken = this.$localStorage.get('accessToken')
     let loginUser = this.$localStorage.get('loginUser')
     if (this.accessToken) {
