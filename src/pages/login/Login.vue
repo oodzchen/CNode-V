@@ -13,8 +13,9 @@
             <v-icon>fa-camera</v-icon>
           </v-btn>
           <v-text-field v-model="accessToken" label="输入Access Token"></v-text-field>
+          <p>不在电脑傍边？<a href="https://cnodejs.org/signin" target="_blank">去获得Access Token</a></p>
           <v-btn 
-            block 
+            block
             :disabled="accessToken.length === 0"
             color="primary"
             @click="login"
