@@ -92,7 +92,7 @@
       fixed
       fab 
       dark
-      color="primary" 
+      color="primary"
       to="/new"
       class="btn-new"
     >
@@ -279,6 +279,9 @@ export default {
           newTabs.push(item)
         }
       })
+      if (this.currTab > newTabs.length - 1) {
+        this.currTab = 0
+      }
       this.tabs = newTabs
       this.$localStorage.set('selectedTabs', selects.join(','))
     },
