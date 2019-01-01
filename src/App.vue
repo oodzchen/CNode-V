@@ -67,9 +67,6 @@ export default {
   ]),
   watch: {
     $route () {
-      this.$store.commit('CHANGE_SNACK', {
-        show: false
-      })
       this.$store.commit('CHANGE_PAGELOADING', false)
     },
     themeColor (newVal) {
