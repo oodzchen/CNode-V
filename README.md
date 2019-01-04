@@ -32,4 +32,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - [x] 帖子编辑
 - [x] 清除缓存
 - [x] 通知数量
-- [ ] 主题色
+- [x] 夜晚模式
+- [ ] 站外链接控制
+- [ ] TAB状态管理
+- [ ] PWA说明
+- [ ] 路由模式调整
