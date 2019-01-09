@@ -37,7 +37,7 @@
           <v-list-tile-action><v-icon>fa-cog</v-icon></v-list-tile-action>
           <v-list-tile-content>设置</v-list-tile-content>
         </v-list-tile>
-        <v-list-tile href="https://github.com/oodzchen/CNode-PWA/issues/new">
+        <v-list-tile href="https://github.com/oodzchen/CNode-V/issues/new">
           <v-list-tile-action><v-icon>fa-comment-alt</v-icon></v-list-tile-action>
           <v-list-tile-content>反馈</v-list-tile-content>
         </v-list-tile>

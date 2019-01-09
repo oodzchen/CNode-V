@@ -1,4 +1,4 @@
-# CNode-PWA
+# CNode-V
 
 > A Vue.js project
 
