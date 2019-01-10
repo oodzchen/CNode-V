@@ -10,11 +10,16 @@ import Notifications from '@/pages/Notifications'
 import Login from '@/pages/login/Login'
 import Settings from '@/pages/settings/Settings'
 import About from '@/pages/About'
+import NotFound from '@/pages/NotFound'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '*',
+      component: NotFound
+    },
     {
       path: '/',
       name: 'Home',
