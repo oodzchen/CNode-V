@@ -70,6 +70,7 @@ export default {
         this.ajax(`/topic/${this.topicId}/replies`, config)
           .then(data => {
             if (data.success) {
+              this.replyContent = ''
               this.$router.go(-1)
               this.$emit('replysuccess')
             }
