@@ -20,7 +20,7 @@
         <h3>{{user.loginname}}</h3>
         <p class="grey--text">积分 {{user.score}} • 注册于 {{user.create_at | timeFormattor}}</p>
         <p>
-          <v-icon>fab fa-github</v-icon> <a :href="`https://github.com/${user.githubUsername}`">{{user.githubUsername}}</a>
+          <v-icon>fab fa-github</v-icon> <a target="_blank" :href="`https://github.com/${user.githubUsername}`">{{user.githubUsername}}</a>
         </p>
       </template>
     </v-card>
