@@ -65,6 +65,8 @@ export default {
           config.data.reply_id = this.toReplyId
         }
 
+        config.data.content += '\n\n来自 [CNode-V](https://github.com/oodzchen/CNode-V)'
+
         this.ajax(`/topic/${this.topicId}/replies`, config)
           .then(data => {
             if (data.success) {

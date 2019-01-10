@@ -125,7 +125,10 @@ export default {
       data.topic_id = this.id
 
       if (this.$refs.form.validate()) {
-        console.log('submit!')
+        if (!this.isEdit) {
+          data.content += '\n\n来自 [CNode-V](https://github.com/oodzchen/CNode-V)'
+        }
+        console.log(data.content)
         this.ajax(path, {
           method: 'post',
           showloading: true,
