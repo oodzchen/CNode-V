@@ -193,16 +193,23 @@ export default {
   components: {
     TopicReply
   },
+  beforeRouteUpdate (to, from, next) {
+    this.updateData(to.params.id)
+    next()
+  },
   created () {
     this.accessToken = this.$localStorage.get('accessToken')
-    this.currTopic = this.getTopicFromCache(this.id)
-    this.getTopic()
+    this.updateData(this.id)
   },
   methods: {
+    updateData (topicId) {
+      this.currTopic = this.getTopicFromCache(topicId)
+      this.getTopic(topicId)
+    },
     onLoginUser (data) {
       this.loginUser = data
     },
-    getTopic (item) {
+    getTopic (topicId) {
       if (!this.currTopic.replies) {
         this.showRepliesLoading = true
       }
@@ -215,11 +222,11 @@ export default {
         config.params.accesstoken = this.accessToken
       }
 
-      this.ajax(`/topic/${this.id}`, config)
+      this.ajax(`/topic/${topicId}`, config)
         .then(data => {
           if (data.success) {
             this.currTopic = data.data
-            this.$localStorage.set(`topic_${this.id}`, JSON.stringify(data.data))
+            this.$localStorage.set(`topic_${topicId}`, JSON.stringify(data.data))
           }
         })
         .finally(() => {
@@ -301,9 +308,14 @@ export default {
     },
     clickInject (e) {
       if (e.target.tagName.toLowerCase() === 'a') {
-        if (e.target.origin === window.location.origin) {
+        if ((e.target.origin === window.location.origin ||
+          e.target.origin === 'https://cnodejs.org') &&
+          /^\/((topic|user)\/|$)/.test(e.target.pathname)) {
           e.preventDefault()
           this.$router.push(e.target.pathname)
+          this.$forceUpdate()
+        } else {
+          e.target.target = '_blank'
         }
       }
     },
