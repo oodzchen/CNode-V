@@ -214,6 +214,10 @@ export default {
         this.showRepliesLoading = true
       }
 
+      if (!topicId) {
+        topicId = this.id
+      }
+
       let config = {
         params: {}
       }
