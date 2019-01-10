@@ -29,10 +29,17 @@
       <v-tab v-for="item in tabs" :key="item.category">{{item.name}}</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="currTab">
+    <v-tabs-items
+      v-model="currTab"
+      @touchstart.native.stop
+      @touchmove.native.stop
+      @touchend.native.stop
+    >
       <v-tab-item
         v-for="(data, category) in tabsData"
         :key="category"
+        v-touch="{right: e => swipeRight()}"
+        class="tab-item"
       >
         <v-list v-if="data.length" three-line class="tab-list">
           <template v-for="(item, index) in data">
@@ -79,6 +86,9 @@
 .user-card
   min-height: 180px
   padding: 15px 0
+
+.tab-item
+  min-height: 60vh
 </style>
 
 
@@ -157,6 +167,11 @@ export default {
         .finally(() => {
           this.showGetCollectLoading = false
         })
+    },
+    swipeRight () {
+      if (this.currTab === 0) {
+        this.$router.go(-1)
+      }
     }
   }
 }

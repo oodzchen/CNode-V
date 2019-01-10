@@ -64,7 +64,8 @@
       <slot name="toolbar"></slot>
       <slot name="toolbar-extension" slot="extension"></slot>
     </v-toolbar>
-    <v-content>
+    <v-content
+    >
       <slot></slot>
     </v-content>
     

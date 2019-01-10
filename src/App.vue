@@ -1,5 +1,9 @@
 <template>
-  <v-app :dark="themeColor === 'dark'" class="app-container" >
+  <v-app
+    :dark="themeColor === 'dark'"
+    class="app-container"
+    v-touch="onPageTouch()"
+  >
     <router-view></router-view>
 
     <v-snackbar
@@ -80,6 +84,16 @@ export default {
         this.$store.commit('CHANGE_SNACK', {
           show: false
         })
+      }
+    },
+    onPageTouch () {
+      return {
+        right: e => this.onSwipeRight()
+      }
+    },
+    onSwipeRight () {
+      if (this.$route.path !== '/') {
+        this.$router.go(-1)
       }
     }
   }
