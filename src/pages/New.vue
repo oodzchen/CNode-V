@@ -95,7 +95,6 @@ export default {
   },
   created () {
     this.accessToken = this.getToken(this.$route.path)
-    console.log(this.id, this.isEdit)
     if (this.isEdit) {
       this.ajax(`/topic/${this.id}`, {
         showloading: true,
@@ -104,7 +103,6 @@ export default {
         }
       }).then(data => {
         if (data.success) {
-          console.log('topic: ', data)
           this.formTab = data.data.tab
           this.formTitle = data.data.title
           this.formContent = data.data.content
@@ -128,7 +126,6 @@ export default {
         if (!this.isEdit) {
           data.content += '\n\n来自 [CNode-V](https://github.com/oodzchen/CNode-V)'
         }
-        console.log(data.content)
         this.ajax(path, {
           method: 'post',
           showloading: true,
