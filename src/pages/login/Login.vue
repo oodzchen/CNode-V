@@ -6,12 +6,16 @@
           <v-icon>fa-arrow-left</v-icon>
         </v-btn>
         <v-toolbar-title>登录</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-tooltip bottom>
+          <v-btn slot="activator" icon to="/login/camera">
+            <v-icon>fa-qrcode</v-icon>
+          </v-btn>
+          <span>扫码登录</span>
+        </v-tooltip>
       </template>
       <v-card flat class="text-center">
-        <v-card-text>  
-          <v-btn icon fab color="primary" to="/login/camera">
-            <v-icon>fa-camera</v-icon>
-          </v-btn>
+        <v-card-text>
           <v-text-field v-model="accessToken" label="输入Access Token"></v-text-field>
           <p>不在电脑旁边？<a href="https://cnodejs.org/signin" target="_blank">去获得Access Token</a></p>
           <v-btn 
