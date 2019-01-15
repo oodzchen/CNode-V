@@ -6,5 +6,7 @@ export default {
     text: '',
     timeout: 3000
   },
-  pageLoading: false
+  pageLoading: false,
+  unreadMsgs: [],
+  readMsgs: []
 }

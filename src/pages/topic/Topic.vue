@@ -175,6 +175,7 @@
 <script>
 import TABS_MAP from '@/data/tabs-map'
 import TopicReply from './TopicReply'
+import { mapGetters } from 'vuex'
 
 export default {
   props: [ 'id', 'reply' ],
@@ -190,6 +191,10 @@ export default {
       loginUser: null
     }
   },
+  computed: mapGetters([
+    'unreadTopicsMap',
+    'unreadTopicIds'
+  ]),
   components: {
     TopicReply
   },
@@ -226,11 +231,15 @@ export default {
         config.params.accesstoken = this.accessToken
       }
 
-      this.ajax(`/topic/${topicId}`, config)
+      return this.ajax(`/topic/${topicId}`, config)
         .then(data => {
           if (data.success) {
             this.currTopic = data.data
             this.$localStorage.set(`topic_${topicId}`, JSON.stringify(data.data))
+
+            if (this.unreadTopicIds.indexOf(this.id) >= 0) {
+              this.unreadTopicsMap[this.id].forEach(msgId => this.markAsRead(msgId))
+            }
           }
         })
         .finally(() => {
@@ -326,6 +335,18 @@ export default {
     getTopicFromCache (id) {
       let data = this.$localStorage.get(`topic_${id}`)
       return data ? JSON.parse(data) : {}
+    },
+    markAsRead (msgId) {
+      this.ajax(`/message/mark_one/${msgId}`, {
+        method: 'post',
+        data: {
+          accesstoken: this.accessToken
+        }
+      }).then(data => {
+        if (data.success) {
+          this.$store.commit('READ_SINGLE_MSG', msgId)
+        }
+      })
     }
   }
 }
