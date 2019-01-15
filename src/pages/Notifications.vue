@@ -6,7 +6,7 @@
       </v-btn>
       <v-toolbar-title>提醒</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="markAllAsRead">
+      <v-btn icon @click="markAllAsRead" :disabled="unread.length === 0">
         <v-icon>fa-check-double</v-icon>
       </v-btn>
     </template>
@@ -19,15 +19,18 @@
           :to="`/topic/${item.topic.id}`"
           @click="markAsRead(item, index)"
         >
+          <v-list-tile-avatar>
+            <img :src="item.author.avatar_url">
+          </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>
-              <v-avatar size="24">
-                <img :src="item.author.avatar_url">
-              </v-avatar>
               {{item.author.loginname}}
               <template v-if="item.type === 'reply'">回复了你的主题 <b>{{item.topic.title}}</b></template>
               <template v-else-if="item.type === 'at'">在主题 <b>{{item.topic.title}}</b> 中提到了你</template>
             </v-list-tile-title>
+            <v-list-tile-sub-title>
+              {{item.create_at | timeFormattor}}
+            </v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </template>
@@ -104,6 +107,7 @@ export default {
       if (this.unread.length === 0) return
 
       this.ajax('/message/mark_all', {
+        showloading: true,
         method: 'post',
         data: {
           accesstoken: this.accessToken
