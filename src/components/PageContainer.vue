@@ -3,6 +3,7 @@
     <v-navigation-drawer
       v-if="drawer"
       app
+      temporary
       left
       v-model="showDrawer"
     >
