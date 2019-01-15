@@ -151,6 +151,8 @@ TABS.forEach(tab => {
   }
 })
 
+let eventHandlers = []
+
 export default {
   data () {
     return primaryData
@@ -185,16 +187,17 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('scroll', this.onTabListScroll.bind(this), false)
-    window.addEventListener('scroll', () => {
-      if (this.scrollTop() > window.innerHeight) {
-        this.showToTopBtn = true
-      } else {
-        this.showToTopBtn = false
-      }
-    }, false)
+    eventHandlers.push(this.checkToGetMore.bind(this))
+    eventHandlers.push(this.checkToShowBtn.bind(this))
+
+    eventHandlers.forEach(handler => {
+      window.addEventListener('scroll', handler, false)
+    })
   },
   beforeDestroy () {
+    eventHandlers.forEach(handler => {
+      window.removeEventListener('scroll', handler)
+    })
     this.showDrawer = false
   },
   methods: {
@@ -233,7 +236,7 @@ export default {
         return Math.max(window.document.documentElement.scrollTop, window.document.body.scrollTop)
       }
     },
-    onTabListScroll: debounce(function () {
+    checkToGetMore: debounce(function () {
       if (Math.ceil(this.scrollTop()) >= document.documentElement.offsetHeight - window.innerHeight) {
         let state = this.tabsState[this.currCategory]
         this.showGetMoreLoading = true
@@ -256,6 +259,13 @@ export default {
           })
       }
     }, 50),
+    checkToShowBtn () {
+      if (this.scrollTop() > window.innerHeight) {
+        this.showToTopBtn = true
+      } else {
+        this.showToTopBtn = false
+      }
+    },
     cacheTopics (data) {
       data.forEach(item => {
         this.$localStorage.set(`topic_${item.id}`, JSON.stringify(item))
