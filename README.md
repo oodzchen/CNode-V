@@ -33,7 +33,13 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - [x] 清除缓存
 - [x] 通知数量
 - [x] 夜晚模式
-- [ ] 站外链接控制
+- [x] 站外链接控制
 - [ ] TAB状态管理
-- [ ] PWA说明
+- [x] PWA说明
 - [ ] 路由模式调整
+- [ ] 调整抽屉在PC端的交互
+- [ ] 分享
+- [ ] 分享页打开时，返回主页问题
+- [ ] 通知
+- [ ] 下拉刷新
+- [ ] 代码块样式调整
