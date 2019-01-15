@@ -17,7 +17,6 @@
           :key="index + '_tile'" 
           :class="{read: item.has_read}"
           :to="`/topic/${item.topic.id}`"
-          @click="markAsRead(item, index)"
         >
           <v-list-tile-avatar>
             <img :src="item.author.avatar_url">
