@@ -19,6 +19,7 @@
         solo
         label="你的回复"
         no-resize
+        rows="20"
         required
         autofocus
       ></v-textarea>

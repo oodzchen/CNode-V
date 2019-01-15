@@ -31,6 +31,7 @@
         :rules="contentRules"
         solo
         flat
+        rows="20"
         no-resize
         required
       ></v-textarea>
