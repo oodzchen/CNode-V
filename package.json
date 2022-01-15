@@ -75,7 +75,7 @@
     "phantomjs-prebuilt": "^2.1.15",
     "rimraf": "^2.6.2",
     "semver": "^5.4.1",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.5",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.14.0",
     "stylus": "^0.54.5",
